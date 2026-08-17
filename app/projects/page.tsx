@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 import Projects from "@/components/sections/Projects";
+import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Explore my portfolio of projects --- Amatun Shop, Amatun Delivery, Aventurooo and more, built with Angular, Spring Boot, React Native and PostgreSQL.",
+    "Engineering projects by Rami Sassi — CoBeez (SaaS formation platform), PR9Auto (garage management), Aventuroo (travel platform) and more, built with Angular, Spring Boot and Docker.",
 };
 
 export default function ProjectsPage() {
   return (
-    <div className="pt-28">
-      <Projects preview={false} />
-    </div>
+    <PageTransition>
+      <div className="pt-20">
+        <Projects preview={false} />
+      </div>
+    </PageTransition>
   );
 }

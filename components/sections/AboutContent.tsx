@@ -55,7 +55,7 @@ export default function AboutContent() {
 
               {/* Badges */}
               <div className="flex flex-col items-center gap-2 text-center">
-                <p className="text-xl font-bold text-white">{siteConfig.name}</p>
+                <p className="text-xl font-bold text-slate-800 dark:text-white">{siteConfig.name}</p>
                 <p className="text-sm text-slate-400">{siteConfig.title}</p>
                 <p className="text-xs text-slate-600">{siteConfig.location}</p>
               </div>
@@ -105,11 +105,11 @@ export default function AboutContent() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-3">
                   About Me
                 </p>
-                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-5">
+                <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-5">
                   Passionate about building{" "}
                   <span className="gradient-text">great software</span>
                 </h1>
-                <div className="space-y-4 text-slate-400 leading-relaxed">
+                <div className="space-y-4 text-slate-600 dark:text-slate-400 leading-relaxed">
                   <p>
                     I&apos;m a Full-Stack Engineer based in {siteConfig.location} with a passion
                     for crafting scalable, well-architected applications. I specialise in Java
@@ -142,7 +142,7 @@ export default function AboutContent() {
                     >
                       <v.icon className="w-4 h-4 text-white" />
                     </div>
-                    <h3 className="text-sm font-semibold text-white mb-1">{v.title}</h3>
+                    <h3 className="text-sm font-semibold text-slate-800 dark:text-white mb-1">{v.title}</h3>
                     <p className="text-xs text-slate-500 leading-relaxed">{v.desc}</p>
                   </motion.div>
                 ))}

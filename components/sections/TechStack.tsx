@@ -1,73 +1,119 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
-import { techStack } from "@/lib/data";
+import { skillCategories } from "@/lib/data";
 
-const container: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-};
+// Flatten all tech items into a single ticker list
+const allTech = skillCategories.flatMap(cat =>
+  cat.items.map(item => ({ name: item.name, color: cat.color, category: cat.label }))
+);
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.9 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 200, damping: 18 },
-  },
-};
+// Duplicate for seamless loop
+const tickerItems = [...allTech, ...allTech];
 
 export default function TechStack() {
   return (
-    <section className="section-sm" id="tech">
-      <div className="container-xl">
+    <section className="section-sm" id="tech" style={{ overflow: "hidden" }}>
+      <div className="container-xl mb-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.5 }}
+          className="text-center"
         >
-          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-3">
-            Tech Stack
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">
+          <p className="section-label mb-2">Stack</p>
+          <h2
+            className="text-2xl sm:text-3xl font-bold"
+            style={{ color: "var(--color-text-primary)" }}
+          >
             Technologies I work with
           </h2>
         </motion.div>
+      </div>
 
+      {/* Ticker row 1 — left to right */}
+      <div className="relative mb-3">
+        <div
+          className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to right, var(--color-bg), transparent)" }}
+        />
+        <div
+          className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to left, var(--color-bg), transparent)" }}
+        />
         <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4"
+          className="flex gap-3 w-max"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          style={{ willChange: "transform" }}
         >
-          {techStack.map((tech) => (
-            <motion.div
-              key={tech.name}
-              variants={item}
-              whileHover={{ y: -6, scale: 1.05 }}
-              className="group glow-border glass glass-hover rounded-2xl p-5 flex flex-col items-center gap-3 cursor-default transition-colors duration-300"
+          {tickerItems.slice(0, Math.ceil(tickerItems.length / 2) * 2).map((tech, i) => (
+            <div
+              key={`r1-${i}`}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl flex-shrink-0 cursor-default select-none"
+              style={{
+                background: `${tech.color}10`,
+                border: `1px solid ${tech.color}25`,
+              }}
             >
               <span
-                className="text-3xl filter drop-shadow-md group-hover:scale-125 transition-transform duration-300"
-                role="img"
-                aria-label={tech.name}
+                className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                style={{ background: tech.color }}
+              />
+              <span
+                className="font-mono text-xs font-medium whitespace-nowrap"
+                style={{ color: tech.color }}
               >
-                {tech.icon}
-              </span>
-              <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
                 {tech.name}
               </span>
-              {/* Glow dot */}
               <span
-                className="w-1.5 h-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ backgroundColor: tech.color, boxShadow: `0 0 8px ${tech.color}` }}
+                className="font-mono text-[9px] opacity-50 whitespace-nowrap hidden sm:block"
+                style={{ color: tech.color }}
+              >
+                {tech.category}
+              </span>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Ticker row 2 — right to left */}
+      <div className="relative">
+        <div
+          className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to right, var(--color-bg), transparent)" }}
+        />
+        <div
+          className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to left, var(--color-bg), transparent)" }}
+        />
+        <motion.div
+          className="flex gap-3 w-max"
+          animate={{ x: ["-50%", "0%"] }}
+          transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+          style={{ willChange: "transform" }}
+        >
+          {[...tickerItems].reverse().map((tech, i) => (
+            <div
+              key={`r2-${i}`}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl flex-shrink-0 cursor-default select-none"
+              style={{
+                background: `${tech.color}08`,
+                border: `1px solid ${tech.color}20`,
+              }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                style={{ background: tech.color }}
               />
-            </motion.div>
+              <span
+                className="font-mono text-xs font-medium whitespace-nowrap"
+                style={{ color: tech.color }}
+              >
+                {tech.name}
+              </span>
+            </div>
           ))}
         </motion.div>
       </div>

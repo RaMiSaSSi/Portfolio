@@ -1,60 +1,66 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ramisassi.dev"),
   title: {
-    default: "Sassi Rami --- Full-Stack Engineer",
-    template: "%s | Sassi Rami",
+    default: "Rami Sassi — Full-Stack Software Engineer",
+    template: "%s | Rami Sassi",
   },
   description:
-    "Full-Stack Engineer specialising in Java, Spring Boot, Angular and React Native. Building performant, scalable web and mobile applications from Tunis, Tunisia.",
+    "Full-Stack Software Engineer specialising in Angular, React, Spring Boot, NestJS and DevOps. Engineering student / alternant at ESPRIT, building scalable, production-ready applications.",
   keywords: [
+    "Rami Sassi",
     "Full-Stack Developer",
-    "Java",
-    "Spring Boot",
-    "Angular",
-    "React Native",
-    "PostgreSQL",
-    "Tunisia",
+    "Software Engineer",
+    "Angular Developer",
+    "Spring Boot Developer",
+    "React Developer",
+    "NestJS",
+    "Docker",
+    "Full-Stack Developer Tunisia",
     "Portfolio",
+    "ESPRIT",
   ],
-  authors: [{ name: "Sassi Rami" }],
-  creator: "Sassi Rami",
+  authors: [{ name: "Rami Sassi" }],
+  creator: "Rami Sassi",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://alexramis.dev", // TODO: your domain
-    title: "Sassi Rami --- Full-Stack Engineer",
+    url: "https://ramisassi.dev",
+    title: "Rami Sassi — Full-Stack Software Engineer",
     description:
-      "Full-Stack Engineer specialising in Java, Spring Boot, Angular and React Native.",
-    siteName: "Sassi Rami Portfolio",
+      "Full-Stack Software Engineer specialising in Angular, Spring Boot, NestJS and DevOps.",
+    siteName: "Rami Sassi Portfolio",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Sassi Rami --- Full-Stack Engineer Portfolio",
+        alt: "Rami Sassi — Full-Stack Software Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sassi Rami --- Full-Stack Engineer",
+    title: "Rami Sassi — Full-Stack Software Engineer",
     description:
-      "Full-Stack Engineer specialising in Java, Spring Boot, Angular and React Native.",
+      "Full-Stack Software Engineer specialising in Angular, Spring Boot, NestJS and DevOps.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -72,6 +78,8 @@ export const metadata: Metadata = {
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import BackToTop from "@/components/layout/BackToTop";
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
@@ -79,11 +87,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${geistMono.variable}`}>
-      <body className="noise">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <head>
+        <meta name="theme-color" content="#0a0a12" />
+      </head>
+      <body>
+        <Providers>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <BackToTop />
+        </Providers>
       </body>
     </html>
   );
