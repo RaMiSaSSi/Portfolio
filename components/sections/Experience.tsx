@@ -3,22 +3,23 @@
 import { motion } from "framer-motion";
 import { Briefcase, Calendar, MapPin, GraduationCap } from "lucide-react";
 import { experiences, education } from "@/lib/data";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const typeColors: Record<string, { bg: string; text: string; border: string }> = {
   "alternance": {
-    bg:     "rgba(139,92,246,0.12)",
-    text:   "#c4b5fd",
-    border: "rgba(139,92,246,0.3)",
+    bg:     "rgba(232,72,43,0.1)",
+    text:   "#ff7a5c",
+    border: "rgba(232,72,43,0.3)",
   },
   "internship": {
-    bg:     "rgba(245,158,11,0.12)",
-    text:   "#fcd34d",
-    border: "rgba(245,158,11,0.3)",
+    bg:     "rgba(217,164,65,0.1)",
+    text:   "#e3b94f",
+    border: "rgba(217,164,65,0.3)",
   },
   "project": {
-    bg:     "rgba(34,211,238,0.12)",
-    text:   "#67e8f9",
-    border: "rgba(34,211,238,0.3)",
+    bg:     "rgba(91,123,166,0.1)",
+    text:   "#8fb0d6",
+    border: "rgba(91,123,166,0.3)",
   },
 };
 
@@ -26,35 +27,26 @@ export default function Experience() {
   return (
     <section className="section" id="experience">
       <div className="container-xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14"
-        >
-          <p className="section-label">Career</p>
-          <h2
-            className="text-3xl sm:text-4xl font-bold mb-3"
-            style={{ color: "var(--color-text-primary)" }}
-          >
-            Experience & Education
-          </h2>
-          <p className="max-w-lg mx-auto text-sm" style={{ color: "var(--color-text-secondary)" }}>
-            An engineering path shaped by real projects, academic rigour and continuous learning.
-          </p>
-        </motion.div>
+        <SectionHeader
+          index="05"
+          label="career"
+          title={
+            <>
+              Experience & <em className="serif-accent">education</em>
+            </>
+          }
+          note="An engineering path shaped by real projects, academic rigour and continuous learning."
+        />
 
         <div className="max-w-3xl mx-auto space-y-16">
           {/* Work Experience */}
           <div>
             <div className="flex items-center gap-3 mb-8">
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: "rgba(139,92,246,0.15)" }}
+                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: "rgba(232,72,43,0.12)" }}
               >
-                <Briefcase className="w-4 h-4 text-violet-400" />
+                <Briefcase className="w-4 h-4" style={{ color: "#ff7a5c" }} />
               </div>
               <h3
                 className="font-semibold text-base"
@@ -81,10 +73,10 @@ export default function Experience() {
                       {/* Icon node */}
                       <div className="relative z-10 mt-1 flex-shrink-0">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+                          className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg"
                           style={{
-                            background: "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                            boxShadow: "0 4px 16px rgba(124,58,237,0.3)",
+                            background: "linear-gradient(135deg, #b3541e, #8a3f17)",
+                            boxShadow: "0 4px 16px rgba(179,84,30,0.35)",
                           }}
                         >
                           <Briefcase className="w-4 h-4 text-white" />
@@ -100,8 +92,8 @@ export default function Experience() {
                           border: "1px solid var(--color-border)",
                         }}
                         onMouseEnter={e => {
-                          (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.3)";
-                          (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(139,92,246,0.1)";
+                          (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.3)";
+                          (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(232,72,43,0.08)";
                         }}
                         onMouseLeave={e => {
                           (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
@@ -112,12 +104,12 @@ export default function Experience() {
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
                           <div>
                             <h4
-                              className="text-base font-bold group-hover:text-violet-300 transition-colors"
+                              className="text-base font-bold group-hover:text-white transition-colors"
                               style={{ color: "var(--color-text-primary)" }}
                             >
                               {exp.role}
                             </h4>
-                            <p className="text-sm font-medium text-violet-400">{exp.company}</p>
+                            <p className="text-sm font-medium" style={{ color: "#e3b94f" }}>{exp.company}</p>
                           </div>
                           <span
                             className="self-start text-xs px-2.5 py-1 rounded-full font-mono font-medium flex-shrink-0"
@@ -133,11 +125,11 @@ export default function Experience() {
                           style={{ color: "var(--color-text-muted)" }}
                         >
                           <span className="flex items-center gap-1.5">
-                            <Calendar className="w-3.5 h-3.5 text-violet-400" />
+                            <Calendar className="w-3.5 h-3.5" style={{ color: "var(--color-rust)" }} />
                             {exp.period}
                           </span>
                           <span className="flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-violet-400" />
+                            <MapPin className="w-3.5 h-3.5" style={{ color: "var(--color-rust)" }} />
                             {exp.location}
                           </span>
                         </div>
@@ -152,7 +144,7 @@ export default function Experience() {
                             >
                               <span
                                 className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
-                                style={{ background: "#8b5cf6" }}
+                                style={{ background: "#e8482b" }}
                               />
                               {point}
                             </li>
@@ -166,9 +158,9 @@ export default function Experience() {
                               key={t}
                               className="font-mono text-[10px] px-2 py-0.5 rounded-lg"
                               style={{
-                                background: "rgba(139,92,246,0.1)",
-                                color: "#a78bfa",
-                                border: "1px solid rgba(139,92,246,0.2)",
+                                background: "rgba(232,72,43,0.08)",
+                                color: "#cbbfa4",
+                                border: "1px solid rgba(232,72,43,0.2)",
                               }}
                             >
                               {t}
@@ -187,10 +179,10 @@ export default function Experience() {
           <div>
             <div className="flex items-center gap-3 mb-8">
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: "rgba(34,211,238,0.12)" }}
+                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: "rgba(91,123,166,0.12)" }}
               >
-                <GraduationCap className="w-4 h-4 text-cyan-400" />
+                <GraduationCap className="w-4 h-4" style={{ color: "#8fb0d6" }} />
               </div>
               <h3
                 className="font-semibold text-base"
@@ -215,7 +207,7 @@ export default function Experience() {
                     border: "1px solid var(--color-border)",
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(34,211,238,0.25)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(91,123,166,0.35)";
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
@@ -229,7 +221,7 @@ export default function Experience() {
                       >
                         {edu.degree} — {edu.field}
                       </h4>
-                      <p className="text-xs font-medium text-cyan-400">{edu.institution}</p>
+                      <p className="text-xs font-medium" style={{ color: "#8fb0d6" }}>{edu.institution}</p>
                     </div>
                     <div
                       className="flex items-center gap-1.5 text-xs flex-shrink-0"
@@ -246,9 +238,9 @@ export default function Experience() {
                     <span
                       className="inline-block mt-2 font-mono text-[10px] px-2 py-0.5 rounded-full"
                       style={{
-                        background: "rgba(52,211,153,0.12)",
-                        color: "#34d399",
-                        border: "1px solid rgba(52,211,153,0.25)",
+                        background: "rgba(163,160,78,0.12)",
+                        color: "#c2bf7d",
+                        border: "1px solid rgba(163,160,78,0.3)",
                       }}
                     >
                       {edu.grade}

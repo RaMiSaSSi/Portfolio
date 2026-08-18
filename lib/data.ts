@@ -35,7 +35,7 @@ export const skillCategories: SkillCategory[] = [
   {
     id:          "frontend",
     label:       "Frontend",
-    color:       "#22d3ee",
+    color:       "#e8482b",
     description: "Building reactive, accessible and performant user interfaces",
     items: [
       { name: "Angular",      description: "Component architecture, NgRx state management and reactive forms" },
@@ -49,7 +49,7 @@ export const skillCategories: SkillCategory[] = [
   {
     id:          "backend",
     label:       "Backend",
-    color:       "#8b5cf6",
+    color:       "#d9a441",
     description: "Designing reliable, secure and scalable server-side systems",
     items: [
       { name: "Java",             description: "OOP, concurrency, streams and enterprise patterns" },
@@ -65,7 +65,7 @@ export const skillCategories: SkillCategory[] = [
   {
     id:          "database",
     label:       "Databases",
-    color:       "#34d399",
+    color:       "#4cd08d",
     description: "Modeling data for reliability, performance and scale",
     items: [
       { name: "PostgreSQL", description: "Relational modeling, indexing, transactions and query optimization" },
@@ -77,7 +77,7 @@ export const skillCategories: SkillCategory[] = [
   {
     id:          "devops",
     label:       "DevOps",
-    color:       "#f59e0b",
+    color:       "#3f8f7f",
     description: "Automating the path from code to production",
     items: [
       { name: "Docker",         description: "Containerized development, multi-stage builds and Docker Compose" },
@@ -91,7 +91,7 @@ export const skillCategories: SkillCategory[] = [
   {
     id:          "other",
     label:       "Other",
-    color:       "#f87171",
+    color:       "#c96f4a",
     description: "Additional capabilities across the engineering spectrum",
     items: [
       { name: "Python",         description: "Scripting, data processing and AI/chatbot integration" },
@@ -796,7 +796,7 @@ export const pipelineSteps: PipelineStep[] = [
     label:       "Design",
     description: "Architecture planning, data modeling and API contract definition before writing a single line of code.",
     tools:       ["System diagrams", "OpenAPI spec", "DB schema"],
-    color:       "#a78bfa",
+    color:       "#b3541e",
   },
   {
     id:          "develop",
@@ -804,7 +804,7 @@ export const pipelineSteps: PipelineStep[] = [
     label:       "Develop",
     description: "Full-stack implementation with clean code principles, SOLID patterns and thorough unit testing.",
     tools:       ["Spring Boot", "Angular", "TypeScript", "JUnit"],
-    color:       "#22d3ee",
+    color:       "#e8482b",
   },
   {
     id:          "integrate",
@@ -812,7 +812,7 @@ export const pipelineSteps: PipelineStep[] = [
     label:       "Integrate",
     description: "CI pipeline configuration, automated testing gates and integration test suites.",
     tools:       ["GitHub Actions", "Docker Build", "Integration tests"],
-    color:       "#34d399",
+    color:       "#d9a441",
   },
   {
     id:          "containerize",
@@ -820,7 +820,7 @@ export const pipelineSteps: PipelineStep[] = [
     label:       "Containerize",
     description: "Multi-stage Docker builds and Docker Compose orchestration for consistent environments.",
     tools:       ["Docker", "Docker Compose", "Multi-stage builds"],
-    color:       "#f59e0b",
+    color:       "#a3a04e",
   },
   {
     id:          "deploy",
@@ -828,7 +828,7 @@ export const pipelineSteps: PipelineStep[] = [
     label:       "Deploy",
     description: "Automated deployment pipelines targeting Linux servers with Nginx as reverse proxy.",
     tools:       ["Nginx", "Linux", "SSH deploys", "GitHub Actions"],
-    color:       "#f87171",
+    color:       "#3f8f7f",
   },
   {
     id:          "monitor",
@@ -836,6 +836,6 @@ export const pipelineSteps: PipelineStep[] = [
     label:       "Monitor",
     description: "Logging, health checks and application monitoring to ensure production reliability.",
     tools:       ["Spring Actuator", "Log aggregation", "Health checks"],
-    color:       "#fb923c",
+    color:       "#c96f4a",
   },
 ];

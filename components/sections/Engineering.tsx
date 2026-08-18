@@ -3,190 +3,190 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { pipelineSteps } from "@/lib/data";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function Engineering() {
-  const [active, setActive] = useState<string | null>(pipelineSteps[0].id);
+  const [active, setActive] = useState<string>(pipelineSteps[0].id);
 
-  const activeStep = pipelineSteps.find(s => s.id === active);
+  const activeStep = pipelineSteps.find(s => s.id === active) ?? pipelineSteps[0];
 
   return (
     <section className="section" id="engineering">
       <div className="container-xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14"
-        >
-          <p className="section-label">Engineering Approach</p>
-          <h2
-            className="text-3xl sm:text-4xl font-bold mb-3"
-            style={{ color: "var(--color-text-primary)" }}
-          >
-            Beyond the UI
-          </h2>
-          <p
-            className="max-w-xl mx-auto text-sm leading-relaxed"
-            style={{ color: "var(--color-text-secondary)" }}
-          >
-            I don't just build interfaces. I own the complete engineering lifecycle —
-            from system design to containerized production deployment.
-          </p>
-        </motion.div>
+        <SectionHeader
+          index="04"
+          label="engineering approach"
+          title={
+            <>
+              Beyond the <em className="serif-accent">UI</em>
+            </>
+          }
+          note="I don't just build interfaces. I own the complete engineering lifecycle — from system design to containerized production deployment."
+          align="center"
+        />
 
-        {/* Pipeline */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="max-w-5xl mx-auto"
-        >
-          {/* Step buttons (horizontal on desktop, vertical on mobile) */}
-          <div className="relative">
-            {/* Connection line */}
+        {/* ── Timeline — desktop horizontal / mobile vertical ─────────── */}
+        <div className="max-w-5xl mx-auto">
+          <div className="hidden lg:block relative">
             <div
-              className="hidden lg:block absolute top-1/2 left-0 right-0 h-px -translate-y-1/2"
-              style={{ background: "linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent)" }}
+              className="absolute top-[15px] left-0 right-0 h-px"
+              style={{ background: "linear-gradient(90deg, transparent, var(--color-border-warm), transparent)" }}
             />
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8 relative">
-              {pipelineSteps.map((step, i) => {
+            <div className="grid grid-cols-6">
+              {pipelineSteps.map(step => {
                 const isActive = active === step.id;
                 return (
-                  <motion.button
+                  <button
                     key={step.id}
                     onClick={() => setActive(step.id)}
-                    whileHover={{ y: -3 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="flex flex-col items-center gap-2 p-3 rounded-xl text-center transition-all duration-200"
-                    style={{
-                      background: isActive ? `${step.color}12` : "var(--color-surface)",
-                      border: `1px solid ${isActive ? step.color + "50" : "var(--color-border)"}`,
-                      boxShadow: isActive ? `0 0 20px ${step.color}20` : "none",
-                    }}
-                    aria-label={step.label}
+                    aria-label={`Phase ${step.phase} — ${step.label}`}
+                    className="group relative flex flex-col items-center pt-1 pb-6 min-h-[72px]"
                   >
                     <span
-                      className="font-mono text-[10px] tracking-widest"
+                      className="relative z-10 w-[13px] h-[13px] transition-all duration-250"
+                      style={{
+                        background: isActive ? step.color : "var(--color-bg)",
+                        border: `1.5px solid ${isActive ? step.color : "var(--color-border-warm)"}`,
+                        transform: isActive ? "rotate(45deg)" : "rotate(0deg)",
+                        boxShadow: isActive ? `0 0 14px ${step.color}55` : "none",
+                      }}
+                    />
+                    <span
+                      className="absolute top-[15px] z-0 w-full h-px opacity-0"
+                      aria-hidden
+                    />
+                    <span
+                      className="font-mono text-[0.6rem] tracking-[0.2em] mt-3 uppercase transition-colors duration-200"
                       style={{ color: isActive ? step.color : "var(--color-text-muted)" }}
                     >
-                      {step.phase}
+                      P{step.phase}
                     </span>
                     <span
-                      className="font-semibold text-sm"
-                      style={{ color: isActive ? step.color : "var(--color-text-secondary)" }}
+                      className="font-display font-bold text-sm uppercase tracking-wide transition-colors duration-200"
+                      style={{ color: isActive ? "var(--color-text-primary)" : "var(--color-text-secondary)" }}
                     >
                       {step.label}
                     </span>
-                    {isActive && (
-                      <motion.div
-                        layoutId="pipeline-indicator"
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: step.color }}
-                      />
-                    )}
-                  </motion.button>
+                  </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Detail card */}
-          <AnimatePresence mode="wait">
-            {activeStep && (
-              <motion.div
-                key={activeStep.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.25 }}
-                className="rounded-2xl p-6 lg:p-8"
-                style={{
-                  background: `${activeStep.color}08`,
-                  border: `1px solid ${activeStep.color}25`,
-                  boxShadow: `0 0 40px ${activeStep.color}10`,
-                }}
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
+          {/* Mobile vertical rail */}
+          <div className="lg:hidden mb-8">
+            <div className="relative pl-8">
+              <div
+                className="absolute left-[7px] top-2 bottom-2 w-px"
+                style={{ background: "var(--color-border-warm)" }}
+              />
+              <div className="space-y-2">
+                {pipelineSteps.map(step => {
+                  const isActive = active === step.id;
+                  return (
+                    <button
+                      key={step.id}
+                      onClick={() => setActive(step.id)}
+                      aria-expanded={isActive}
+                      className="relative w-full text-left py-3 pr-3 transition-colors duration-200"
+                      style={{ minHeight: 48 }}
+                    >
                       <span
-                        className="font-mono text-xs font-bold tracking-widest"
-                        style={{ color: activeStep.color }}
-                      >
-                        PHASE {activeStep.phase}
-                      </span>
-                      <div className="flex-1 h-px" style={{ background: `${activeStep.color}30` }} />
-                    </div>
-                    <h3
-                      className="text-2xl font-bold mb-3"
-                      style={{ color: "var(--color-text-primary)" }}
-                    >
-                      {activeStep.label}
-                    </h3>
-                    <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-                      {activeStep.description}
-                    </p>
-                  </div>
-                  <div>
-                    <p
-                      className="font-mono text-[10px] tracking-widest uppercase mb-3"
-                      style={{ color: "var(--color-text-muted)" }}
-                    >
-                      Tools & Practices
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {activeStep.tools.map(tool => (
+                        className="absolute left-[-8px] top-1/2 -translate-y-1/2 w-[15px] h-[15px] transition-transform duration-250"
+                        style={{
+                          background: isActive ? step.color : "var(--color-bg)",
+                          border: `1.5px solid ${isActive ? step.color : "var(--color-border-warm)"}`,
+                          transform: `translateY(-50%) ${isActive ? "rotate(45deg)" : "rotate(0deg)"}`,
+                        }}
+                      />
+                      <span className="flex items-baseline gap-3">
                         <span
-                          key={tool}
-                          className="font-mono text-xs px-3 py-1.5 rounded-lg font-medium"
-                          style={{
-                            background: `${activeStep.color}14`,
-                            color: activeStep.color,
-                            border: `1px solid ${activeStep.color}30`,
-                          }}
+                          className="font-mono text-[0.62rem] tracking-[0.2em] uppercase"
+                          style={{ color: isActive ? step.color : "var(--color-text-muted)" }}
                         >
-                          {tool}
+                          P{step.phase}
                         </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Pipeline flow visualization */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="mt-12 flex items-center justify-center gap-0 flex-wrap"
-          >
-            {pipelineSteps.map((step, i) => (
-              <div key={step.id} className="flex items-center">
-                <div
-                  className="font-mono text-[11px] px-3 py-1.5 rounded-lg font-medium cursor-pointer transition-all duration-200 hover:scale-105"
-                  style={{
-                    background: `${step.color}10`,
-                    color: step.color,
-                    border: `1px solid ${step.color}25`,
-                  }}
-                  onClick={() => setActive(step.id)}
-                >
-                  {step.label}
-                </div>
-                {i < pipelineSteps.length - 1 && (
-                  <div className="px-2 text-xs" style={{ color: "var(--color-text-muted)" }}>→</div>
-                )}
+                        <span
+                          className="font-display font-bold uppercase tracking-wide text-sm transition-colors duration-200"
+                          style={{ color: isActive ? "var(--color-text-primary)" : "var(--color-text-secondary)" }}
+                        >
+                          {step.label}
+                        </span>
+                        <span
+                          className={`ml-auto font-mono text-xs transition-all duration-200 ${
+                            isActive ? "opacity-100" : "opacity-0"
+                          }`}
+                          style={{ color: step.color }}
+                        >
+                          ▾
+                        </span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-            ))}
-          </motion.div>
-        </motion.div>
+            </div>
+          </div>
+
+          {/* ── Note — annotated detail ───────────────────────────────── */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeStep.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                border: "1px solid var(--color-border-warm)",
+                background: "var(--color-surface)",
+              }}
+            >
+              <div
+                className="flex items-center justify-between gap-3 px-5 py-2.5"
+                style={{ borderBottom: "1px solid var(--color-border-warm)" }}
+              >
+                <span className="font-mono text-[0.62rem] tracking-[0.22em] uppercase" style={{ color: "var(--color-rust)" }}>
+                  Note — phase {activeStep.phase}
+                </span>
+                <span className="font-mono text-[0.62rem]" style={{ color: "var(--color-text-muted)" }}>
+                  SPEC.{activeStep.phase}/06
+                </span>
+              </div>
+              <div className="p-5 sm:p-7">
+                <h3
+                  className="font-display font-bold text-xl sm:text-2xl uppercase mb-3"
+                  style={{ color: "var(--color-text-primary)" }}
+                >
+                  {activeStep.label}
+                </h3>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--color-text-secondary)" }}>
+                  {activeStep.description}
+                </p>
+                <p
+                  className="font-mono text-[0.6rem] tracking-[0.22em] uppercase mb-2.5"
+                  style={{ color: "var(--color-text-muted)" }}
+                >
+                  Tools & practices
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {activeStep.tools.map(tool => (
+                    <span
+                      key={tool}
+                      className="font-mono text-xs px-3 py-1.5 rounded-sm font-medium"
+                      style={{
+                        background: `${activeStep.color}10`,
+                        color: activeStep.color,
+                        border: `1px solid ${activeStep.color}30`,
+                      }}
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );

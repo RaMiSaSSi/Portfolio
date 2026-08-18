@@ -7,6 +7,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { Send, Github, Linkedin, Mail, MapPin, CheckCircle2, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/data";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const schema = z.object({
   name:    z.string().min(2, "Name must be at least 2 characters"),
@@ -23,9 +24,9 @@ const socials = [
     icon:    Github,
     label:   "GitHub",
     handle:  "@RaMiSaSSi",
-    color:   "#c4b5fd",
-    bg:      "rgba(139,92,246,0.1)",
-    border:  "rgba(139,92,246,0.25)",
+    color:   "#ff7a5c",
+    bg:      "rgba(232,72,43,0.1)",
+    border:  "rgba(232,72,43,0.25)",
   },
   {
     href:    siteConfig.linkedin,
@@ -41,7 +42,7 @@ const socials = [
     icon:    Mail,
     label:   "Email",
     handle:  siteConfig.email,
-    color:   "#34d399",
+    color:   "#4cd08d",
     bg:      "rgba(52,211,153,0.1)",
     border:  "rgba(52,211,153,0.25)",
   },
@@ -75,25 +76,17 @@ export default function Contact() {
   return (
     <section className="section" id="contact">
       <div className="container-xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-14"
-        >
-          <p className="section-label">Contact</p>
-          <h2
-            className="text-3xl sm:text-4xl font-bold mb-3"
-            style={{ color: "var(--color-text-primary)" }}
-          >
-            Let's build something useful.
-          </h2>
-          <p className="max-w-lg mx-auto text-sm" style={{ color: "var(--color-text-secondary)" }}>
-            Have a project in mind, a role to discuss, or just want to say hello?
-            I'm always open to interesting conversations.
-          </p>
-        </motion.div>
+        <SectionHeader
+          index="06"
+          label="contact"
+          title={
+            <>
+              Let&apos;s build something <em className="serif-accent">useful.</em>
+            </>
+          }
+          note="Have a project in mind, a role to discuss, or just want to say hello? I'm always open to interesting conversations."
+          align="center"
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 max-w-5xl mx-auto">
           {/* Sidebar */}
@@ -112,9 +105,9 @@ export default function Contact() {
               <div className="flex items-start gap-3 mb-4">
                 <div
                   className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: "rgba(139,92,246,0.15)" }}
+                  style={{ background: "rgba(232,72,43,0.15)" }}
                 >
-                  <MapPin className="w-4 h-4 text-violet-400" />
+                  <MapPin className="w-4 h-4 text-[#e3b94f]" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold" style={{ color: "var(--color-text-primary)" }}>
@@ -212,11 +205,11 @@ export default function Contact() {
                     Message sent!
                   </h3>
                   <p className="text-sm mb-6" style={{ color: "var(--color-text-secondary)" }}>
-                    Thanks for reaching out — I'll get back to you within 24 hours.
+                    Thanks for reaching out — I&apos;ll get back to you within 24 hours.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors"
+                    className="text-sm font-medium text-[#e3b94f] hover:text-[#ff7a5c] transition-colors"
                   >
                     Send another message
                   </button>
@@ -239,7 +232,7 @@ export default function Contact() {
                         placeholder="John Doe"
                         className={inputClass}
                         style={inputStyle}
-                        onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.5)"; }}
+                        onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.5)"; }}
                         onBlur={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)"; }}
                       />
                       {errors.name && (
@@ -263,7 +256,7 @@ export default function Contact() {
                         placeholder="john@example.com"
                         className={inputClass}
                         style={inputStyle}
-                        onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.5)"; }}
+                        onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.5)"; }}
                         onBlur={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)"; }}
                       />
                       {errors.email && (
@@ -287,7 +280,7 @@ export default function Contact() {
                       placeholder="Project enquiry / collaboration..."
                       className={inputClass}
                       style={inputStyle}
-                      onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.5)"; }}
+                      onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.5)"; }}
                       onBlur={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)"; }}
                     />
                     {errors.subject && (
@@ -311,7 +304,7 @@ export default function Contact() {
                       placeholder="Tell me about your project, idea, or just say hi..."
                       className={inputClass}
                       style={inputStyle}
-                      onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.5)"; }}
+                      onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.5)"; }}
                       onBlur={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)"; }}
                     />
                     {errors.message && (
@@ -327,7 +320,7 @@ export default function Contact() {
                     whileTap={{ scale: 0.99 }}
                     className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-sm text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
-                      background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+                      background: "linear-gradient(135deg, #e8482b, #b3541e)",
                       boxShadow: "0 8px 24px rgba(124,58,237,0.3)",
                     }}
                   >

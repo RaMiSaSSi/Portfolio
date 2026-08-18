@@ -41,7 +41,7 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs text-white shadow-lg"
-                style={{ background: "linear-gradient(135deg, #7c3aed, #22d3ee)" }}
+                style={{ background: "linear-gradient(135deg, #e8482b, #d9a441)" }}
               >
                 RS
               </div>
@@ -63,7 +63,7 @@ export default function Footer() {
                 style={{
                   background: "rgba(52,211,153,0.1)",
                   border: "1px solid rgba(52,211,153,0.25)",
-                  color: "#34d399",
+                  color: "#4cd08d",
                 }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -87,7 +87,7 @@ export default function Footer() {
                     href={link.href}
                     className="text-xs transition-all duration-200 inline-block hover:translate-x-1"
                     style={{ color: "var(--color-text-secondary)" }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#c4b5fd"; }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#ff7a5c"; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--color-text-secondary)"; }}
                   >
                     {link.label}
@@ -120,9 +120,9 @@ export default function Footer() {
                     color: "var(--color-text-muted)",
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.35)";
-                    (e.currentTarget as HTMLElement).style.background = "rgba(139,92,246,0.1)";
-                    (e.currentTarget as HTMLElement).style.color = "#c4b5fd";
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.35)";
+                    (e.currentTarget as HTMLElement).style.background = "rgba(232,72,43,0.1)";
+                    (e.currentTarget as HTMLElement).style.color = "#ff7a5c";
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
@@ -138,7 +138,7 @@ export default function Footer() {
               href={`mailto:${siteConfig.email}`}
               className="font-mono text-[11px] transition-colors duration-200"
               style={{ color: "var(--color-text-muted)" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#a78bfa"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#b3541e"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--color-text-muted)"; }}
             >
               {siteConfig.email}

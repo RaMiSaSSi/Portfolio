@@ -14,13 +14,13 @@ const stackColor = (s: string) => {
     "Docker":         { bg: "#2496ed12", text: "#7dd3fc", border: "#2496ed30" },
     "Python / Rasa":  { bg: "#3776ab12", text: "#93c5fd", border: "#3776ab30" },
     "WebSocket":      { bg: "#f59e0b12", text: "#fcd34d", border: "#f59e0b30" },
-    "JWT":            { bg: "#8b5cf612", text: "#c4b5fd", border: "#8b5cf630" },
-    "React":          { bg: "#61dafb12", text: "#67e8f9", border: "#61dafb30" },
-    "React Native":   { bg: "#61dafb12", text: "#67e8f9", border: "#61dafb30" },
+    "JWT":            { bg: "#e8482b12", text: "#cbbfa4", border: "#e8482b30" },
+    "React":          { bg: "#61dafb12", text: "#7fd6c0", border: "#61dafb30" },
+    "React Native":   { bg: "#61dafb12", text: "#7fd6c0", border: "#61dafb30" },
     "Node.js":        { bg: "#33993312", text: "#86efac", border: "#33993330" },
     "Express":        { bg: "#33993312", text: "#86efac", border: "#33993330" },
     "Python":         { bg: "#3776ab12", text: "#93c5fd", border: "#3776ab30" },
-    "PWA":            { bg: "#8b5cf612", text: "#c4b5fd", border: "#8b5cf630" },
+    "PWA":            { bg: "#e8482b12", text: "#cbbfa4", border: "#e8482b30" },
   };
   return map[s] ?? { bg: "rgba(255,255,255,0.05)", text: "rgba(255,255,255,0.6)", border: "rgba(255,255,255,0.1)" };
 };
@@ -28,10 +28,10 @@ const stackColor = (s: string) => {
 function StatusBadge({ status }: { status: Project["status"] }) {
   if (status !== "in-progress") return null;
   return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2 py-0.5 rounded-full"
-      style={{ background: "rgba(245,158,11,0.12)", color: "#fbbf24", border: "1px solid rgba(245,158,11,0.3)" }}
+    <span className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2 py-0.5 rounded-sm"
+      style={{ background: "rgba(217,164,65,0.1)", color: "#e3b94f", border: "1px solid rgba(217,164,65,0.35)" }}
     >
-      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+      <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#d9a441" }} />
       In progress
     </span>
   );
@@ -83,7 +83,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
   const sry = useSpring(ry, { stiffness: 180, damping: 18 });
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
-  const glow = useMotionTemplate`radial-gradient(360px circle at ${mx}% ${my}%, rgba(139,92,246,0.15), transparent 65%)`;
+  const glow = useMotionTemplate`radial-gradient(360px circle at ${mx}% ${my}%, rgba(232,72,43,0.15), transparent 65%)`;
 
   const onMouseMove = useCallback((e: React.MouseEvent) => {
     const el = ref.current;
@@ -204,7 +204,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
         style={{
           background: "linear-gradient(180deg, var(--color-bg-muted) 0%, var(--color-surface) 100%)",
           border: "1px solid var(--color-border-2)",
-          boxShadow: "0 0 90px rgba(139,92,246,0.22), 0 48px 96px rgba(0,0,0,0.65)",
+          boxShadow: "0 0 90px rgba(232,72,43,0.22), 0 48px 96px rgba(0,0,0,0.65)",
         }}
         initial={{ opacity: 0, scale: 0.92, y: 24 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -215,13 +215,13 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
           aria-hidden
           className="absolute top-0 inset-x-0 h-72 pointer-events-none"
           style={{
-            background: "radial-gradient(70% 100% at 50% 0%, rgba(139,92,246,0.14), transparent 75%)",
+            background: "radial-gradient(70% 100% at 50% 0%, rgba(232,72,43,0.14), transparent 75%)",
           }}
         />
         <div
           aria-hidden
           className="absolute top-0 left-0 right-0 h-[2px]"
-          style={{ background: "linear-gradient(90deg, transparent, #8b5cf6, #22d3ee, transparent)" }}
+          style={{ background: "linear-gradient(90deg, transparent, #e8482b, #d9a441, transparent)" }}
         />
         <div
           className="sticky top-0 z-10 flex items-center justify-between gap-3 px-6 py-4"
@@ -229,12 +229,12 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
         >
           <div className="min-w-0">
             <div className="flex items-center gap-2.5">
-              <span className="font-mono text-xs tracking-widest" style={{ color: "#a78bfa" }}>
+              <span className="font-mono text-xs tracking-widest" style={{ color: "#b3541e" }}>
                 PROJECT {project.number}
               </span>
               <span
                 className="w-1 h-1 rounded-full"
-                style={{ background: "linear-gradient(135deg, #8b5cf6, #22d3ee)", boxShadow: "0 0 8px rgba(139,92,246,0.9)" }}
+                style={{ background: "linear-gradient(135deg, #e8482b, #d9a441)", boxShadow: "0 0 8px rgba(232,72,43,0.9)" }}
               />
               <StatusBadge status={project.status} />
             </div>
@@ -279,27 +279,27 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                   }`}
                   style={
                     isMobile
-                      ? { border: "6px solid #1c1c30", outline: "1px solid var(--color-border-2)", background: "#0a0a12" }
+                      ? { border: "6px solid #23201b", outline: "1px solid var(--color-border-2)", background: "#0a0908" }
                       : { border: "1px solid var(--color-border-2)", background: "var(--color-bg)" }
                   }
                 >
                   {isMobile ? (
                     <div
                       className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-4 py-2.5"
-                      style={{ background: "linear-gradient(180deg, rgba(10,10,18,0.55), transparent)" }}
+                      style={{ background: "linear-gradient(180deg, rgba(12,11,9,0.55), transparent)" }}
                     >
                       <span className="font-mono text-[9px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>
                         9:41
                       </span>
-                      <div className="w-16 h-4 rounded-full" style={{ background: "rgba(10,10,18,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
-                      <span className="font-mono text-[9px]" style={{ color: "#a78bfa" }}>
+                      <div className="w-16 h-4 rounded-full" style={{ background: "rgba(12,11,9,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
+                      <span className="font-mono text-[9px]" style={{ color: "#b3541e" }}>
                         {String(shot + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}
                       </span>
                     </div>
                   ) : (
                     <div
                       className="absolute top-0 inset-x-0 z-10 flex items-center gap-2 px-3 py-2"
-                      style={{ background: "rgba(10,10,18,0.6)", backdropFilter: "blur(8px)" }}
+                      style={{ background: "rgba(12,11,9,0.6)", backdropFilter: "blur(8px)" }}
                     >
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
@@ -309,7 +309,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                       >
                         {project.id.replace(/-/g, ".")}.app
                       </span>
-                      <span className="font-mono text-[10px]" style={{ color: "#a78bfa" }}>
+                      <span className="font-mono text-[10px]" style={{ color: "#b3541e" }}>
                         {String(shot + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}
                       </span>
                     </div>
@@ -367,8 +367,8 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                         isMobile ? "rounded-2xl w-12 h-24" : "rounded-lg w-20 h-12"
                       }`}
                       style={{
-                        border: `1px solid ${i === shot ? "rgba(139,92,246,0.65)" : "var(--color-border)"}`,
-                        boxShadow: i === shot ? "0 0 14px rgba(139,92,246,0.25)" : "none",
+                        border: `1px solid ${i === shot ? "rgba(232,72,43,0.65)" : "var(--color-border)"}`,
+                        boxShadow: i === shot ? "0 0 14px rgba(232,72,43,0.25)" : "none",
                         opacity: i === shot ? 1 : 0.55,
                       }}
                     >
@@ -382,7 +382,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
             <div
               className="relative overflow-hidden rounded-2xl p-5"
               style={{
-                background: "linear-gradient(150deg, rgba(139,92,246,0.09), rgba(34,211,238,0.04) 55%, transparent)",
+                background: "linear-gradient(150deg, rgba(232,72,43,0.09), rgba(34,211,238,0.04) 55%, transparent)",
                 border: "1px solid var(--color-border)",
               }}
             >
@@ -393,7 +393,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                 className="text-xs font-mono flex flex-wrap items-center gap-x-3 gap-y-1 mb-3"
                 style={{ color: "var(--color-text-muted)" }}
               >
-                <span style={{ color: "#a78bfa" }}>ROLE:</span>
+                <span style={{ color: "#b3541e" }}>ROLE:</span>
                 <span style={{ color: "var(--color-text-secondary)" }}>{project.role}</span>
               </p>
               {project.description && (
@@ -426,7 +426,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                   <ModalSection
                     icon={<span className="font-mono text-[10px] font-bold">01</span>}
                     label="Problem"
-                    color="#f87171"
+                    color="#e8482b"
                   >
                     <p className="text-xs leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                       {project.problem}
@@ -437,7 +437,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                   <ModalSection
                     icon={<span className="font-mono text-[10px] font-bold">02</span>}
                     label="Solution"
-                    color="#67e8f9"
+                    color="#7fd6c0"
                   >
                     <p className="text-xs leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                       {project.solution}
@@ -453,7 +453,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                   <ModalSection
                     icon={<Layers className="w-3.5 h-3.5" />}
                     label="Architecture"
-                    color="#a78bfa"
+                    color="#b3541e"
                     className="h-full"
                   >
                     <ArchDiagram layers={project.arch} />
@@ -464,7 +464,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                   <ModalSection
                     icon={<Zap className="w-3.5 h-3.5" />}
                     label="Key Features"
-                    color="#38bdf8"
+                    color="#d9a441"
                     className="h-full"
                   >
                     <ul className="grid grid-cols-1 gap-2.5">
@@ -472,7 +472,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                         <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "var(--color-text-secondary)" }}>
                           <span
                             className="flex items-center justify-center w-4 h-4 rounded-full flex-shrink-0 mt-0.5"
-                            style={{ background: "#38bdf818", border: "1px solid #38bdf833", color: "#38bdf8" }}
+                            style={{ background: "#d9a44118", border: "1px solid #d9a44133", color: "#d9a441" }}
                           >
                             <Check className="w-2.5 h-2.5" />
                           </span>
@@ -489,14 +489,14 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
               <ModalSection
                 icon={<span className="font-mono text-[10px] font-bold">{String(project.challenges.length).padStart(2, "0")}</span>}
                 label="Technical Challenges"
-                color="#fbbf24"
+                color="#c96f4a"
               >
                 <ul className="space-y-2.5">
                   {project.challenges.map((c, i) => (
                     <li
                       key={i}
                       className="flex items-start gap-2.5 text-xs rounded-lg px-3 py-2"
-                      style={{ background: "#fbbf2408", border: "1px solid #fbbf2414", color: "var(--color-text-secondary)" }}
+                      style={{ background: "#c96f4a08", border: "1px solid #c96f4a14", color: "var(--color-text-secondary)" }}
                     >
                       <span className="font-mono text-amber-400 flex-shrink-0 mt-0.5">
                         {String(i + 1).padStart(2, "0")}
@@ -512,18 +512,18 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
               <ModalSection
                 icon={<BookOpen className="w-3.5 h-3.5" />}
                 label="What I Learned"
-                color="#34d399"
+                color="#a3a04e"
               >
                 <ul className="space-y-2.5">
                   {project.learned.map((l, i) => (
                     <li
                       key={i}
                       className="flex items-start gap-2.5 text-xs rounded-lg px-3 py-2"
-                      style={{ background: "#34d39908", border: "1px solid #34d39914", color: "var(--color-text-secondary)" }}
+                      style={{ background: "#a3a04e08", border: "1px solid #a3a04e14", color: "var(--color-text-secondary)" }}
                     >
                       <span
                         className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
-                        style={{ background: "#34d399", boxShadow: "0 0 8px rgba(52,211,153,0.7)" }}
+                        style={{ background: "#a3a04e", boxShadow: "0 0 8px rgba(52,211,153,0.7)" }}
                       />
                       {l}
                     </li>
@@ -535,7 +535,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
             {(project.github || project.demo) && (
               <div
                 className="rounded-2xl p-5 flex flex-wrap items-center justify-center gap-3"
-                style={{ background: "rgba(139,92,246,0.05)", border: "1px solid var(--color-border)" }}
+                style={{ background: "rgba(232,72,43,0.05)", border: "1px solid var(--color-border)" }}
               >
                 {project.github && (
                   <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-ghost text-xs" style={{ padding: "0.5rem 1.25rem", fontSize: "0.8rem" }}>
@@ -563,17 +563,17 @@ function BrowserMockup({ project, big = false }: { project: Project; big?: boole
     return (
       <div className="flex justify-center">
         <div
-          className="relative rounded-[1.75rem] overflow-hidden transition-all duration-500 group-hover:shadow-[0_16px_48px_rgba(139,92,246,0.18)]"
-          style={{ border: "5px solid #1c1c30", outline: "1px solid var(--color-border-2)", background: "#0a0a12" }}
+          className="relative rounded-[1.75rem] overflow-hidden transition-all duration-500 group-hover:shadow-[0_16px_48px_rgba(232,72,43,0.18)]"
+          style={{ border: "5px solid #23201b", outline: "1px solid var(--color-border-2)", background: "#0a0908" }}
         >
           <div
             className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-4 py-2"
-            style={{ background: "linear-gradient(180deg, rgba(10,10,18,0.55), transparent)" }}
+            style={{ background: "linear-gradient(180deg, rgba(12,11,9,0.55), transparent)" }}
           >
             <span className="font-mono text-[9px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>
               9:41
             </span>
-            <div className="w-14 h-4 rounded-full" style={{ background: "rgba(10,10,18,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
+            <div className="w-14 h-4 rounded-full" style={{ background: "rgba(12,11,9,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
             <span className="flex items-center gap-1">
               <span className="w-1 h-1 rounded-full bg-emerald-400" />
               <span className="w-1 h-1 rounded-full bg-emerald-400" />
@@ -601,7 +601,7 @@ function BrowserMockup({ project, big = false }: { project: Project; big?: boole
             />
             <div
               className="absolute bottom-2 right-2 flex items-center gap-1.5 font-mono text-[10px] px-2 py-1 rounded-lg backdrop-blur transition-opacity duration-300 group-hover:opacity-0"
-              style={{ background: "rgba(0,0,0,0.55)", color: "#c4b5fd", border: "1px solid rgba(139,92,246,0.3)" }}
+              style={{ background: "rgba(0,0,0,0.55)", color: "#cbbfa4", border: "1px solid rgba(232,72,43,0.3)" }}
             >
               <Images className="w-3 h-3" />
               {String(project.screenshots.length).padStart(2, "0")} captures
@@ -615,7 +615,7 @@ function BrowserMockup({ project, big = false }: { project: Project; big?: boole
 
   return (
     <div
-      className="relative rounded-xl overflow-hidden transition-all duration-500 group-hover:shadow-[0_16px_48px_rgba(139,92,246,0.18)]"
+      className="relative rounded-xl overflow-hidden transition-all duration-500 group-hover:shadow-[0_16px_48px_rgba(232,72,43,0.18)]"
       style={{ border: "1px solid var(--color-border-2)", background: "var(--color-bg)" }}
     >
       <div
@@ -653,7 +653,7 @@ function BrowserMockup({ project, big = false }: { project: Project; big?: boole
         />
         <div
           className="absolute bottom-2 right-2 flex items-center gap-1.5 font-mono text-[10px] px-2 py-1 rounded-lg backdrop-blur"
-          style={{ background: "rgba(0,0,0,0.55)", color: "#c4b5fd", border: "1px solid rgba(139,92,246,0.3)" }}
+          style={{ background: "rgba(0,0,0,0.55)", color: "#cbbfa4", border: "1px solid rgba(232,72,43,0.3)" }}
         >
           <Images className="w-3 h-3" />
           {String(project.screenshots.length).padStart(2, "0")} captures
@@ -675,11 +675,11 @@ function ProjectCard({
   onOpen: () => void;
 }) {
   const accents = [
-    ["#8b5cf6", "#22d3ee"],
-    ["#22d3ee", "#34d399"],
-    ["#f59e0b", "#f87171"],
-    ["#34d399", "#8b5cf6"],
-    ["#f87171", "#8b5cf6"],
+    ["#e8482b", "#b3541e"],
+    ["#d9a441", "#8f7a3f"],
+    ["#c96f4a", "#a34b33"],
+    ["#3f8f7f", "#2f6b60"],
+    ["#5b7ba6", "#3d5678"],
   ];
   const [a1, a2] = accents[index % accents.length];
 
@@ -768,7 +768,7 @@ function ProjectCard({
 
           <div className="px-6 pb-5 flex flex-col flex-1" style={{ transform: "translateZ(40px)" }}>
             <h3
-              className={`font-bold group-hover:text-violet-300 transition-colors duration-300 ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}
+              className={`font-bold group-hover:text-white transition-colors duration-300 ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}
               style={{ color: "var(--color-text-primary)" }}
             >
               {project.title}
@@ -787,7 +787,7 @@ function ProjectCard({
                     className="font-mono text-[10px] px-2 py-0.5 rounded-full"
                     style={{
                       background: `${a1}12`,
-                      color: "#c4b5fd",
+                      color: "#cbbfa4",
                       border: `1px solid ${a1}30`,
                     }}
                   >
@@ -833,7 +833,7 @@ function ProjectCard({
             }}
           >
             <button
-              className="flex items-center gap-2 text-xs font-medium transition-colors group-hover:text-violet-300"
+              className="flex items-center gap-2 text-xs font-medium transition-colors group-hover:text-white"
               style={{ color: "var(--color-text-muted)" }}
               onClick={e => { e.stopPropagation(); onOpen(); }}
             >
@@ -866,7 +866,7 @@ function ProjectCard({
                   rel="noopener noreferrer"
                   aria-label="Live demo"
                   onClick={e => e.stopPropagation()}
-                  className="p-2 rounded-full transition-all duration-300 hover:text-cyan-300"
+                  className="p-2 rounded-full transition-all duration-300 hover:text-white"
                   style={{ color: "var(--color-text-muted)", background: "rgba(255,255,255,0.04)", border: "1px solid var(--color-border)" }}
                   onMouseEnter={e => { e.currentTarget.style.background = `${a2}22`; e.currentTarget.style.borderColor = `${a2}55`; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "var(--color-border)"; }}
@@ -891,7 +891,7 @@ function FilterChips({ filter, onChange }: { filter: string; onChange: (f: strin
           <button
             key={c}
             onClick={() => onChange(c)}
-            className={`relative px-4 py-1.5 rounded-full font-mono text-xs transition-colors ${active ? "text-white" : ""}`}
+            className={`relative px-4 py-2 font-mono text-xs transition-colors ${active ? "text-white" : ""}`}
             style={{ border: "1px solid var(--color-border)" }}
           >
             {active && (
@@ -899,8 +899,8 @@ function FilterChips({ filter, onChange }: { filter: string; onChange: (f: strin
                 layoutId="filter-pill"
                 className="absolute inset-0 rounded-full"
                 style={{
-                  background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
-                  boxShadow: "0 4px 18px rgba(124,58,237,0.45)",
+                  background: "linear-gradient(135deg, #e8482b, #b3541e)",
+                  boxShadow: "0 4px 18px rgba(232,72,43,0.35)",
                 }}
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
               />
@@ -931,7 +931,7 @@ function TechMarquee({ stack }: { stack: string[] }) {
                 style={{ color: "var(--color-text-muted)" }}
               >
                 {s}
-                <span style={{ color: "#8b5cf6" }}>•</span>
+                <span style={{ color: "#e8482b" }}>•</span>
               </span>
             ))}
           </div>
@@ -984,27 +984,44 @@ export default function Projects({ preview = false }: { preview?: boolean }) {
       <section className="section" id="projects">
         <div className="container-xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="mb-12"
           >
-            
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="font-mono text-[0.65rem] tracking-[0.22em] uppercase" style={{ color: "var(--color-rust)" }}>
+                FIG. 03
+              </span>
+              <span className="font-mono text-[0.65rem] tracking-[0.22em] uppercase" style={{ color: "var(--color-text-muted)" }}>
+                — {preview ? "featured works" : "engineering projects"}
+              </span>
+              <span className="rule flex-1 max-w-[10rem]" aria-hidden />
+            </div>
+
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-              <div>
-                <h2
-                  className="text-3xl sm:text-4xl font-bold"
+              <div className="overflow-hidden pb-1">
+                <motion.h2
+                  initial={{ y: "110%" }}
+                  whileInView={{ y: "0%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  className="font-display text-4xl sm:text-5xl font-bold uppercase leading-[1.05] tracking-tight"
                   style={{ color: "var(--color-text-primary)" }}
                 >
-                  {preview ? "Featured Projects" : "Engineering Projects"}
-                </h2>
-                <p className="mt-2 text-sm max-w-lg" style={{ color: "var(--color-text-secondary)" }}>
-                  Real applications built from scratch — from architecture to deployment.
-                  {preview ? " A curated selection of what I ship." : " Click any card to explore the case study."}
-                </p>
+                  {preview ? (
+                    <>
+                      Featured <em className="serif-accent">projects</em>
+                    </>
+                  ) : (
+                    <>
+                      Engineering <em className="serif-accent">projects</em>
+                    </>
+                  )}
+                </motion.h2>
               </div>
-              <div className="flex items-center gap-4 flex-shrink-0">
+              <div className="flex items-center gap-4 flex-shrink-0 pb-1">
                 <span className="font-mono text-xs" style={{ color: "var(--color-text-muted)" }}>
                   {String(list.length).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
                 </span>
@@ -1016,6 +1033,11 @@ export default function Projects({ preview = false }: { preview?: boolean }) {
                 )}
               </div>
             </div>
+
+            <p className="mt-4 text-sm max-w-lg" style={{ color: "var(--color-text-secondary)" }}>
+              Real applications built from scratch — from architecture to deployment.
+              {preview ? " A curated selection of what I ship." : " Click any card to explore the case study."}
+            </p>
 
             {!preview && (
               <motion.div
@@ -1039,7 +1061,7 @@ export default function Projects({ preview = false }: { preview?: boolean }) {
                     className="h-1.5 rounded-full transition-all duration-500 cursor-pointer"
                     style={{
                       width: spotlight === i ? 28 : 10,
-                      background: spotlight === i ? "linear-gradient(90deg, #8b5cf6, #22d3ee)" : "var(--color-border-2)",
+                      background: spotlight === i ? "linear-gradient(90deg, #e8482b, #d9a441)" : "var(--color-border-2)",
                     }}
                   />
                 ))}

@@ -8,6 +8,8 @@ import Engineering from "@/components/sections/Engineering";
 import Contact from "@/components/sections/Contact";
 import PageTransition from "@/components/layout/PageTransition";
 import SectionDivider from "@/components/layout/SectionDivider";
+import ScrollSnap from "@/components/layout/ScrollSnap";
+import ScrollSectionProgress from "@/components/layout/ScrollSectionProgress";
 
 export const metadata: Metadata = {
   title: "Rami Sassi — Full-Stack Software Engineer",
@@ -17,20 +19,24 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <PageTransition>
-      <Hero />
-      <SectionDivider />
-      <About />
-      <SectionDivider flip />
-      <Skills />
-      <SectionDivider />
-      <Projects preview />
-      <SectionDivider flip />
-      <Engineering />
-      <SectionDivider />
-      <Experience />
-      <SectionDivider flip />
-      <Contact />
-    </PageTransition>
+    <div id="snap-root">
+      <ScrollSnap />
+      <ScrollSectionProgress />
+      <PageTransition>
+        <Hero />
+        <SectionDivider />
+        <About />
+        <SectionDivider flip />
+        <Skills />
+        <SectionDivider />
+        <Projects preview />
+        <SectionDivider flip />
+        <Engineering />
+        <SectionDivider />
+        <Experience />
+        <SectionDivider flip />
+        <Contact />
+      </PageTransition>
+    </div>
   );
 }

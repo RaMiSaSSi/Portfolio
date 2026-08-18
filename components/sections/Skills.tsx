@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { skillCategories, type SkillItem } from "@/lib/data";
+import SectionHeader from "@/components/ui/SectionHeader";
 
-// ─── Category icons (emoji-free) ─────────────────────────────────────────────
+// ─── Category markers (mono codes) ────────────────────────────────────────────
 const categoryIcons: Record<string, string> = {
-  frontend:   "◈",
-  backend:    "⬡",
-  database:   "⬢",
-  devops:     "◉",
-  other:      "◇",
+  frontend:   "FR",
+  backend:    "BE",
+  database:   "DB",
+  devops:     "DE",
+  other:      "OT",
 };
 
 // ─── Chip ────────────────────────────────────────────────────────────────────
@@ -61,25 +62,17 @@ export default function Skills() {
   return (
     <section className="section" id="skills">
       <div className="container-xl">
-        {/* ── Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14"
-        >
-          <p className="section-label">Skills & Technologies</p>
-          <h2
-            className="text-3xl sm:text-4xl font-bold mb-3"
-            style={{ color: "var(--color-text-primary)" }}
-          >
-            What I bring to the table
-          </h2>
-          <p className="max-w-lg mx-auto text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-            A full-stack toolkit built through production projects — not theoretical exercises.
-          </p>
-        </motion.div>
+        <SectionHeader
+          index="02"
+          label="skills & technologies"
+          title={
+            <>
+              What I <em className="serif-accent">bring</em> to the table
+            </>
+          }
+          note="A full-stack toolkit built through production projects — not theoretical exercises."
+          align="center"
+        />
 
         <div className="max-w-4xl mx-auto">
           {/* ── Category tabs */}
@@ -223,7 +216,7 @@ export default function Skills() {
                         }}
                       >
                         <p className="font-mono text-[11px]" style={{ color: "var(--color-text-muted)" }}>
-                          Hover a technology to learn more
+                          Tap a technology to learn more
                         </p>
                       </motion.div>
                     )}

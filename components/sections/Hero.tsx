@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring, animate, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  ArrowRight, Download, Github, Linkedin, Mail, Terminal,
-  MapPin, ChevronDown,
+  ArrowRight, Download, Github, Linkedin, Mail, MapPin, ChevronDown,
 } from "lucide-react";
 import { siteConfig } from "@/lib/data";
 import { downloadCV } from "@/lib/download-cv";
@@ -36,172 +35,122 @@ function useTypewriter(words: string[], speed = 75, pause = 2200) {
   return ref;
 }
 
-// ─── System Architecture Visualization ───────────────────────────────────────
-const ARCH_NODES = [
-  { id: "user",  label: "Client",       sublabel: "Browser / Mobile",  color: "#22d3ee",  icon: "◉", x: 50,  y: 6 },
-  { id: "fe",    label: "Angular",      sublabel: "Frontend SPA",       color: "#dd0031",  icon: "A", x: 50,  y: 22 },
-  { id: "api",   label: "REST API",     sublabel: "HTTP / WebSocket",   color: "#a78bfa",  icon: "⇄", x: 50,  y: 38 },
-  { id: "be",    label: "Spring Boot",  sublabel: "Backend Services",   color: "#6db33f",  icon: "◈", x: 22,  y: 56 },
-  { id: "ai",    label: "AI Service",   sublabel: "Python / Rasa",      color: "#3776ab",  icon: "⬡", x: 78,  y: 56 },
-  { id: "db",    label: "PostgreSQL",   sublabel: "Primary DB",         color: "#336791",  icon: "⬢", x: 22,  y: 74 },
-  { id: "cache", label: "Redis",        sublabel: "Cache / Sessions",   color: "#dc382d",  icon: "◈", x: 78,  y: 74 },
-  { id: "ops",   label: "Docker",       sublabel: "Containerized",      color: "#2496ed",  icon: "□", x: 50,  y: 90 },
-];
+// ─── Graves Plan — fig. 1 — production stack ───────────────────────────────────
+// Monochrome "engraving": hairline strokes, corner registration marks, SMIL dots.
+const INK_MAIN = "#f2ede2";
+const INK_DIM = "#8a8171";
+const INK_MUTED = "#6b6455";
+const LINE = "rgba(203,191,164,0.35)";
+const BOX_FILL = "#161412";
+const BOX_STROKE = "rgba(242,237,226,0.14)";
+const ACCENT = "#e8482b";
 
-const CONNECTIONS = [
-  { from: "user", to: "fe",    animated: true },
-  { from: "fe",   to: "api",   animated: true },
-  { from: "api",  to: "be",    animated: true },
-  { from: "api",  to: "ai",    animated: false },
-  { from: "be",   to: "db",    animated: true },
-  { from: "be",   to: "cache", animated: false },
-  { from: "be",   to: "ops",   animated: false },
-  { from: "ai",   to: "ops",   animated: false },
-];
-
-function ArchVisualization() {
-  const [activeNode, setActiveNode] = useState<string | null>(null);
-  const [tick, setTick] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTick(t => t + 1), 40);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Cycle active node every 1.8s
-  useEffect(() => {
-    const nodes = ARCH_NODES.map(n => n.id);
-    let i = 0;
-    const interval = setInterval(() => {
-      setActiveNode(nodes[i % nodes.length]);
-      i++;
-    }, 1800);
-    return () => clearInterval(interval);
-  }, []);
-
-  const nodeMap = Object.fromEntries(ARCH_NODES.map(n => [n.id, n]));
-
+function Box({
+  x, y, w, label, sub,
+}: { x: number; y: number; w: number; label: string; sub: string }) {
+  const h = 34;
   return (
-    <div className="relative w-full h-[480px] select-none" aria-hidden>
-      {/* Background grid */}
-      <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/5 bg-[#0c0c18]">
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(139,92,246,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.08) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-        {/* Glow */}
-        <div className="absolute inset-0 rounded-2xl" style={{
-          background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(139,92,246,0.08) 0%, transparent 70%)"
-        }} />
-      </div>
+    <g>
+      <rect x={x} y={y} width={w} height={h} rx={2} fill={BOX_FILL} stroke={BOX_STROKE} />
+      <text x={x + w / 2} y={y + 15} textAnchor="middle" className="font-mono" fontSize={10.5} fontWeight={700} fill={INK_MAIN}>
+        {label}
+      </text>
+      <text x={x + w / 2} y={y + 28} textAnchor="middle" className="font-mono" fontSize={8} fill={INK_DIM}>
+        {sub}
+      </text>
+    </g>
+  );
+}
 
-      {/* SVG connections */}
-      <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
+function FlowDot({ d, dur }: { d: string; dur: string }) {
+  return (
+    <circle r={2.5} fill={ACCENT}>
+      <animateMotion dur={dur} repeatCount="indefinite" path={d} />
+    </circle>
+  );
+}
+
+function EngravedPlan() {
+  return (
+    <div
+      className="relative rounded-sm select-none"
+      style={{ border: "1px solid rgba(242,237,226,0.12)", background: "#121110" }}
+      aria-hidden
+    >
+      {/* Corner registration marks */}
+      {[
+        "top-1 left-1", "top-1 right-1", "bottom-1 left-1", "bottom-1 right-1",
+      ].map(pos => (
+        <svg key={pos} className={`absolute ${pos} w-3 h-3`} viewBox="0 0 12 12">
+          <line x1="6" y1="0" x2="6" y2="12" stroke="rgba(203,191,164,0.4)" strokeWidth="1" />
+          <line x1="0" y1="6" x2="12" y2="6" stroke="rgba(203,191,164,0.4)" strokeWidth="1" />
+        </svg>
+      ))}
+
+      <svg viewBox="0 0 460 500" className="w-full h-auto block">
+        {/* faint dot grid */}
         <defs>
-          <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-            <path d="M 0 0 L 6 3 L 0 6 Z" fill="rgba(139,92,246,0.5)" />
-          </marker>
+          <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1" fill="rgba(203,191,164,0.07)" />
+          </pattern>
         </defs>
-        {CONNECTIONS.map(({ from, to, animated }) => {
-          const fn = nodeMap[from], tn = nodeMap[to];
-          if (!fn || !tn) return null;
-          const x1 = `${fn.x}%`, y1 = `${fn.y + 5}%`;
-          const x2 = `${tn.x}%`, y2 = `${tn.y - 2}%`;
-          const isActive = activeNode === from || activeNode === to;
-          return (
-            <g key={`${from}-${to}`}>
-              <line
-                x1={x1} y1={y1} x2={x2} y2={y2}
-                stroke={isActive ? "rgba(139,92,246,0.6)" : "rgba(139,92,246,0.18)"}
-                strokeWidth={isActive ? "1.5" : "1"}
-                strokeDasharray={animated ? "4 4" : undefined}
-                markerEnd="url(#arrow)"
-                style={{ transition: "stroke 0.3s, stroke-width 0.3s" }}
-              />
-              {animated && isActive && (
-                <circle r="2.5" fill="#a78bfa" opacity="0.9">
-                  <animateMotion
-                    dur="1.2s"
-                    repeatCount="indefinite"
-                    path={`M ${fn.x}% ${fn.y + 5}% L ${tn.x}% ${tn.y - 2}%`}
-                  />
-                </circle>
-              )}
-            </g>
-          );
-        })}
+        <rect width="460" height="500" fill="url(#dots)" />
+
+        {/* ── connectors ── */}
+        <g stroke={LINE} strokeWidth="1" fill="none">
+          <path d="M 230 44 V 74" strokeDasharray="4 4" />
+          <path d="M 230 108 V 138" />
+          <path d="M 230 172 V 206" strokeDasharray="4 4" />
+          <path d="M 170 240 H 100 V 266" />
+          <path d="M 290 240 h 70 V 266" />
+          <path d="M 100 300 V 326" />
+          <path d="M 360 300 V 326" />
+          <path d="M 100 360 H 115 V 396 H 230" />
+          <path d="M 360 360 H 345 V 396 H 230" />
+        </g>
+        <g>
+          <FlowDot d="M 230 44 V 74" dur="1.1s" />
+          <FlowDot d="M 230 172 V 206" dur="1.4s" />
+        </g>
+
+        {/* ── annotation: measure ── */}
+        <g stroke="rgba(203,191,164,0.3)" strokeWidth="1">
+          <line x1="248" y1="187" x2="288" y2="187" />
+          <line x1="248" y1="184" x2="248" y2="190" />
+          <line x1="288" y1="184" x2="288" y2="190" />
+        </g>
+        <text x="294" y="190" className="font-mono" fontSize={9} fill={INK_MUTED}>⇄ WS · 80ms</text>
+
+        {/* ── nodes ── */}
+        <Box x={170} y={10} w={120} label="CLIENT" sub="web / mobile" />
+        <Box x={170} y={74} w={120} label="ANGULAR SPA" sub="frontend" />
+        <Box x={170} y={138} w={120} label="REST / GRAPHQL" sub="gateway" />
+        <Box x={10} y={240} w={120} label="SPRING BOOT" sub="backend" />
+        <Box x={300} y={240} w={150} label="REDIS / RASA · PY" sub="cache · ai svc" />
+        <Box x={10} y={326} w={120} label="POSTGRESQL" sub="primary db" />
+        <Box x={300} y={326} w={150} label="ORACLE CLOUD" sub="vps · nginx" />
+        <Box x={95} y={396} w={270} label="DOCKER · CI/CD" sub="containerized deploys" />
+
+        {/* JWT tag */}
+        <text x="170" y="232" className="font-mono" fontSize={9} fill={INK_MUTED}>JWT · OAuth2 ↑</text>
+        {/* status */}
+        <circle cx="444" cy="20" r="4" fill={ACCENT}>
+          <animate attributeName="opacity" values="1;0.3;1" dur="2.4s" repeatCount="indefinite" />
+        </circle>
+        <text x="444" y="40" textAnchor="middle" className="font-mono" fontSize={8} fill={INK_DIM}>OPR</text>
       </svg>
 
-      {/* Nodes */}
-      {ARCH_NODES.map((node) => {
-        const isActive = activeNode === node.id;
-        return (
-          <motion.div
-            key={node.id}
-            className="absolute cursor-pointer"
-            style={{
-              left: `${node.x}%`,
-              top: `${node.y}%`,
-              transform: "translate(-50%, -50%)",
-              zIndex: 2,
-            }}
-            onHoverStart={() => setActiveNode(node.id)}
-            onHoverEnd={() => setActiveNode(null)}
-            animate={{ y: isActive ? -3 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div
-              className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl border text-center"
-              style={{
-                background: isActive
-                  ? `${node.color}18`
-                  : "rgba(22,22,37,0.9)",
-                borderColor: isActive ? node.color : "rgba(255,255,255,0.07)",
-                boxShadow: isActive
-                  ? `0 0 20px ${node.color}33, 0 0 40px ${node.color}15`
-                  : "none",
-                transition: "all 0.3s",
-                minWidth: "80px",
-              }}
-            >
-              <span
-                className="font-mono text-xs font-bold"
-                style={{ color: node.color }}
-              >
-                {node.icon}
-              </span>
-              <span className="text-[11px] font-semibold text-white leading-none">
-                {node.label}
-              </span>
-              <span className="text-[9px] text-white/40 leading-none font-mono">
-                {node.sublabel}
-              </span>
-            </div>
-            {/* Pulse on active */}
-            {isActive && (
-              <motion.div
-                className="absolute inset-0 rounded-xl"
-                style={{ border: `1px solid ${node.color}` }}
-                initial={{ opacity: 0.6, scale: 1 }}
-                animate={{ opacity: 0, scale: 1.5 }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-              />
-            )}
-          </motion.div>
-        );
-      })}
-
-      {/* Corner label */}
-      <div className="absolute top-3 left-4 font-mono text-[10px] text-white/25 tracking-widest">
-        SYSTEM / ARCHITECTURE
-      </div>
-      <div className="absolute top-3 right-4 flex items-center gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="font-mono text-[10px] text-white/25">LIVE</span>
+      {/* Caption bar */}
+      <div
+        className="flex items-center justify-between px-4 py-2"
+        style={{ borderTop: "1px solid rgba(242,237,226,0.1)" }}
+      >
+        <span className="font-mono text-[10px] tracking-widest" style={{ color: INK_DIM }}>
+          FIG. 1 — PROD. STACK
+        </span>
+        <span className="font-mono text-[10px] tracking-widest" style={{ color: INK_MUTED }}>
+          OPR: NOMINAL
+        </span>
       </div>
     </div>
   );
@@ -227,190 +176,178 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" id="home">
-      {/* Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Grid */}
-        <div
-          className="absolute inset-0 opacity-[0.045]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(139,92,246,1) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,1) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-          }}
-        />
-        {/* Radial glows */}
-        <div className="absolute -top-1/4 left-0 w-[700px] h-[700px] rounded-full bg-violet-600/[0.06] blur-[120px]" />
-        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-cyan-500/[0.05] blur-[100px]" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[200px] rounded-full bg-violet-800/[0.08] blur-[80px]" />
-      </div>
+      {/* Background — warm ink, no neon */}
+      <div className="absolute inset-0 pointer-events-none grid-bg opacity-60" />
 
       <div className="container-xl relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-5rem)]">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.92fr_1.25fr] gap-10 items-center min-h-[calc(100vh-5rem)]">
           {/* ── Left: Copy ─────────────────────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col py-16"
-          >
-            {/* Status badge */}
+          <div className="flex flex-col py-14">
+            {/* Status */}
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6 self-start"
-              style={{
-                background: "rgba(139,92,246,0.1)",
-                border: "1px solid rgba(139,92,246,0.3)",
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.08, duration: 0.5 }}
+              className="flex items-center gap-2.5 mb-6"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-mono text-xs text-violet-300 tracking-wide">
-                AVAILABLE FOR OPPORTUNITIES
+              <span className="w-2 h-2" style={{ background: "var(--color-accent)" }} />
+              <span className="font-mono text-[0.68rem] tracking-[0.2em] uppercase" style={{ color: "var(--color-rust)" }}>
+                Status: open — alternant 06/2026
               </span>
             </motion.div>
 
-            {/* Technical label */}
+            {/* Marker */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="section-label mb-3"
+              transition={{ delay: 0.15 }}
+              className="font-mono text-[0.65rem] tracking-[0.24em] uppercase mb-4"
+              style={{ color: "var(--color-text-muted)" }}
             >
-              FULL-STACK SOFTWARE ENGINEER
+              cv.00 — full-stack software engineer · tunis, tn
             </motion.p>
 
-            {/* Main headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold tracking-tight leading-[1.12] mb-5"
-              style={{ color: "var(--color-text-primary)" }}
-            >
-              Building digital products{" "}
-              <span className="gradient-text">from interface to infrastructure.</span>
-            </motion.h1>
+            {/* Headline — clip reveal */}
+            <div className="overflow-hidden pb-1">
+              <motion.h1
+                initial={{ y: "112%" }}
+                animate={{ y: "0%" }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-[clamp(2.5rem,8vw,4.75rem)] font-bold uppercase leading-[1.02] tracking-tight"
+                style={{ color: "var(--color-text-primary)" }}
+              >
+                Building digital products{" "}
+                <em className="serif-accent not-italic uppercase" style={{ fontStyle: "italic" }}>
+                  from interface
+                </em>{" "}
+                to infrastructure.
+              </motion.h1>
+            </div>
 
             {/* Typewriter */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
-              className="flex items-center gap-2 mb-5 h-8"
+              transition={{ delay: 0.5 }}
+              className="flex items-center gap-3 mt-6 h-7"
             >
-              <Terminal className="w-4 h-4 text-violet-400 flex-shrink-0" />
-              <span className="font-mono text-sm text-violet-300">
+              <span className="font-mono text-xs" style={{ color: "var(--color-text-muted)" }}>$</span>
+              <span className="font-mono text-sm" style={{ color: "var(--color-text-secondary)" }}>
                 <span ref={typeRef} />
-                <span className="animate-pulse text-violet-400">_</span>
               </span>
+              <span className="font-mono text-sm" style={{ color: "var(--color-accent-bright)" }}>▊</span>
             </motion.div>
 
             {/* Tagline */}
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-base leading-relaxed mb-2 max-w-lg"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              I build modern full-stack applications using{" "}
-              <span className="text-violet-300 font-medium">Angular / React</span>,{" "}
-              <span className="text-green-400 font-medium">Spring Boot / NestJS</span>, and{" "}
-              <span className="text-cyan-400 font-medium">Docker / CI/CD</span>{" "}
-              — handling everything from database design to cloud deployment.
-            </motion.p>
-
-            {/* Location */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="flex items-center gap-1.5 text-xs mb-8"
-              style={{ color: "var(--color-text-muted)" }}
-            >
-              <MapPin className="w-3.5 h-3.5 text-violet-500" />
-              {siteConfig.location} — Engineering Student / Alternant at ESPRIT
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.65, duration: 0.5 }}
-              className="flex flex-col sm:flex-row gap-3 mb-8"
-            >
-              <Link href="#projects" className="btn-primary">
-                View my work
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link href="#contact" className="btn-ghost">
-                Let's connect
-              </Link>
-              <button
-                onClick={() => void downloadCV()}
-                className="btn-ghost"
-                aria-label="Download CV"
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+                className="text-[0.95rem] leading-relaxed mt-6 max-w-lg"
+                style={{ color: "var(--color-text-secondary)" }}
               >
-                <Download className="w-4 h-4" />
-                Download CV
-              </button>
-            </motion.div>
+                I build modern full-stack applications using{" "}
+                <span style={{ color: "#ff7a5c", fontWeight: 600 }}>Angular / React</span>,{" "}
+                <span style={{ color: "#5fbfa9", fontWeight: 600 }}>Spring Boot / NestJS</span>, and{" "}
+                <span style={{ color: "#d9a441", fontWeight: 600 }}>Docker / CI/CD</span>{" "}
+                — handling everything from database design to cloud deployment.
+              </motion.p>
 
-            {/* Socials */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.75 }}
-              className="flex items-center gap-1"
-            >
-              {socials.map(({ href, icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="p-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5"
-                  style={{
-                    color: "var(--color-text-muted)",
-                    border: "1px solid var(--color-border)",
-                    background: "transparent",
-                  }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.4)";
-                    (e.currentTarget as HTMLElement).style.color = "#c4b5fd";
-                    (e.currentTarget as HTMLElement).style.background = "rgba(139,92,246,0.08)";
-                  }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
-                    (e.currentTarget as HTMLElement).style.color = "var(--color-text-muted)";
-                    (e.currentTarget as HTMLElement).style.background = "transparent";
-                  }}
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
-              <span
-                className="ml-3 text-xs font-mono"
+              {/* Location */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.68 }}
+                className="flex items-center gap-1.5 text-xs mt-4"
                 style={{ color: "var(--color-text-muted)" }}
               >
-                ramisassi11@gmail.com
-              </span>
-            </motion.div>
-          </motion.div>
+                <MapPin className="w-3.5 h-3.5" style={{ color: "var(--color-rust)" }} />
+                {siteConfig.location} — Engineering Student / Alternant at ESPRIT
+              </motion.p>
 
-          {/* ── Right: Architecture Visualization ───────────────────────── */}
+              {/* CTAs */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.74, duration: 0.5 }}
+                className="flex flex-col sm:flex-row gap-3 mt-8"
+              >
+                <Link href="#projects" className="btn-primary w-full sm:w-auto">
+                  View my work
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link href="#contact" className="btn-ghost w-full sm:w-auto">
+                  Let&apos;s connect
+                </Link>
+                <button
+                  onClick={() => void downloadCV()}
+                  className="btn-ghost w-full sm:w-auto"
+                  aria-label="Download CV"
+                >
+                  <Download className="w-4 h-4" />
+                  Download CV
+                </button>
+              </motion.div>
+
+              {/* Socials */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="flex items-center gap-2 mt-8"
+              >
+                {socials.map(({ href, icon: Icon, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex items-center justify-center w-10 h-10 rounded-sm transition-all duration-200 hover:-translate-y-0.5"
+                    style={{
+                      color: "var(--color-text-muted)",
+                      border: "1px solid var(--color-border-warm)",
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.5)";
+                      (e.currentTarget as HTMLElement).style.color = "#ff7a5c";
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border-warm)";
+                      (e.currentTarget as HTMLElement).style.color = "var(--color-text-muted)";
+                    }}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                ))}
+                <span className="ml-3 font-mono text-xs" style={{ color: "var(--color-text-muted)" }}>
+                  ramisassi11@gmail.com
+                </span>
+              </motion.div>
+
+            {/* Mobile stack strip */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9 }}
+              className="mt-10 lg:hidden"
+            >
+              <div className="rule mb-3" />
+              <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase" style={{ color: "var(--color-text-muted)" }}>
+                Stack // Angular · Spring Boot · PostgreSQL · Docker · React Native
+              </p>
+              <div className="rule mt-3" />
+            </motion.div>
+          </div>
+
+          {/* ── Right: Engraved plan ───────────────────────────────────── */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 32 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:block"
+            transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block lg:max-w-[760px] ml-auto w-full"
           >
-            <ArchVisualization />
-            <p className="text-center font-mono text-[11px] mt-3" style={{ color: "var(--color-text-muted)" }}>
-              Hover nodes to inspect the architecture
-            </p>
+            <EngravedPlan />
           </motion.div>
         </div>
       </div>
@@ -419,20 +356,17 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        transition={{ delay: 1.6 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
       >
-        <span
-          className="text-[10px] font-mono tracking-widest uppercase"
-          style={{ color: "var(--color-text-muted)" }}
-        >
-          scroll
+        <span className="font-mono text-[0.6rem] tracking-[0.3em] uppercase" style={{ color: "var(--color-text-muted)" }}>
+          Scroll
         </span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
+          animate={{ y: [0, 5, 0] }}
           transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-4 h-4" style={{ color: "var(--color-text-muted)" }} />
+          <ChevronDown className="w-4 h-4" style={{ color: "var(--color-rust)" }} />
         </motion.div>
       </motion.div>
     </section>

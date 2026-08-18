@@ -14,13 +14,13 @@ const stackColor = (s: string) => {
     "Docker":         { bg: "#2496ed12", text: "#7dd3fc", border: "#2496ed30" },
     "Python / Rasa":  { bg: "#3776ab12", text: "#93c5fd", border: "#3776ab30" },
     "WebSocket":      { bg: "#f59e0b12", text: "#fcd34d", border: "#f59e0b30" },
-    "JWT":            { bg: "#8b5cf612", text: "#c4b5fd", border: "#8b5cf630" },
-    "React":          { bg: "#61dafb12", text: "#67e8f9", border: "#61dafb30" },
-    "React Native":   { bg: "#61dafb12", text: "#67e8f9", border: "#61dafb30" },
+    "JWT":            { bg: "#e8482b12", text: "#ff7a5c", border: "#e8482b30" },
+    "React":          { bg: "#61dafb12", text: "#5fbfa9", border: "#61dafb30" },
+    "React Native":   { bg: "#61dafb12", text: "#5fbfa9", border: "#61dafb30" },
     "Node.js":        { bg: "#33993312", text: "#86efac", border: "#33993330" },
     "Express":        { bg: "#33993312", text: "#86efac", border: "#33993330" },
     "Python":         { bg: "#3776ab12", text: "#93c5fd", border: "#3776ab30" },
-    "PWA":            { bg: "#8b5cf612", text: "#c4b5fd", border: "#8b5cf630" },
+    "PWA":            { bg: "#e8482b12", text: "#ff7a5c", border: "#e8482b30" },
   };
   return map[s] ?? { bg: "rgba(255,255,255,0.05)", text: "rgba(255,255,255,0.6)", border: "rgba(255,255,255,0.1)" };
 };
@@ -128,7 +128,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
       <div className="relative">
         <div
           className="absolute top-0 inset-x-0 h-[520px] pointer-events-none"
-          style={{ background: "radial-gradient(65% 100% at 50% 0%, rgba(139,92,246,0.12), transparent 72%)" }}
+          style={{ background: "radial-gradient(65% 100% at 50% 0%, rgba(232,72,43,0.12), transparent 72%)" }}
         />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -141,7 +141,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
               href="/projects"
               className="flex items-center gap-2 text-sm transition-colors"
               style={{ color: "var(--color-text-muted)" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#c4b5fd"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#ff7a5c"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--color-text-muted)"; }}
             >
               <ArrowLeft className="w-4 h-4" />
@@ -162,13 +162,13 @@ export default function ProjectGallery({ project }: { project: Project }) {
             <p className="font-mono text-xs tracking-[0.25em] uppercase mb-4 flex items-center gap-3">
               <span
                 className="w-2 h-2 rounded-full"
-                style={{ background: "linear-gradient(135deg,#8b5cf6,#22d3ee)", boxShadow: "0 0 12px rgba(139,92,246,0.7)" }}
+                style={{ background: "linear-gradient(135deg,#e8482b,#d9a441)", boxShadow: "0 0 12px rgba(232,72,43,0.7)" }}
               />
-              <span style={{ color: "#a78bfa" }}>Case Study</span>
+              <span style={{ color: "#b3541e" }}>Case Study</span>
               {project.status === "in-progress" && (
                 <span
                   className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2 py-0.5 rounded-full"
-                  style={{ background: "rgba(245,158,11,0.12)", color: "#fbbf24", border: "1px solid rgba(245,158,11,0.3)" }}
+                  style={{ background: "rgba(217,164,65,0.1)", color: "#e3b94f", border: "1px solid rgba(217,164,65,0.3)" }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
                   In progress
@@ -176,12 +176,12 @@ export default function ProjectGallery({ project }: { project: Project }) {
               )}
             </p>
             <h1
-              className="text-4xl sm:text-6xl font-bold leading-[1.05] mb-4"
+              className="font-display text-4xl sm:text-6xl font-bold uppercase leading-[1.02] tracking-tight mb-4"
               style={{ color: "var(--color-text-primary)" }}
             >
               {project.title}
             </h1>
-            <p className="text-lg sm:text-xl mb-6" style={{ color: "#a78bfa" }}>
+            <p className="text-lg sm:text-xl italic mb-6" style={{ color: "#b3541e" }}>
               {project.subtitle || "Engineering case study"}
             </p>
             {project.description && (
@@ -195,7 +195,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                 <span
                   key={tag}
                   className="font-mono text-[11px] px-3 py-1 rounded-full"
-                  style={{ background: "rgba(139,92,246,0.12)", color: "#c4b5fd", border: "1px solid rgba(139,92,246,0.25)" }}
+                  style={{ background: "rgba(232,72,43,0.12)", color: "#ff7a5c", border: "1px solid rgba(232,72,43,0.25)" }}
                 >
                   {tag}
                 </span>
@@ -250,7 +250,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                     <h2 className="flex items-center gap-3 font-semibold text-lg" style={{ color: "var(--color-text-primary)" }}>
                       <span
                         className="flex items-center justify-center w-8 h-8 rounded-lg"
-                        style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)", color: "#a78bfa" }}
+                        style={{ background: "rgba(232,72,43,0.15)", border: "1px solid rgba(232,72,43,0.3)", color: "#b3541e" }}
                       >
                         <Images className="w-4 h-4" />
                       </span>
@@ -262,7 +262,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                   </div>
                   <span
                     className="font-mono text-[10px] px-2.5 py-1 rounded-lg flex-shrink-0"
-                    style={{ background: "rgba(139,92,246,0.1)", color: "#a78bfa", border: "1px solid rgba(139,92,246,0.25)" }}
+                    style={{ background: "rgba(232,72,43,0.1)", color: "#b3541e", border: "1px solid rgba(232,72,43,0.25)" }}
                   >
                     01 / {String(shots.length).padStart(2, "0")}
                   </span>
@@ -276,21 +276,21 @@ export default function ProjectGallery({ project }: { project: Project }) {
                       transition={{ type: "spring", stiffness: 260, damping: 24 }}
                       className="relative block overflow-hidden rounded-[2.75rem] cursor-zoom-in group text-left w-full max-w-[300px] sm:max-w-[320px]"
                       style={{
-                        border: "6px solid #1c1c30",
+                        border: "6px solid #23201b",
                         outline: "1px solid var(--color-border-2)",
-                        background: "#0a0a12",
-                        boxShadow: "0 32px 80px rgba(0,0,0,0.55), 0 0 60px rgba(139,92,246,0.14)",
+                        background: "#0a0908",
+                        boxShadow: "0 32px 80px rgba(0,0,0,0.55), 0 0 60px rgba(232,72,43,0.14)",
                       }}
                       aria-label="Ouvrir la capture principale"
                     >
                       <div
                         className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-5 py-3"
-                        style={{ background: "linear-gradient(180deg, rgba(10,10,18,0.6), transparent)" }}
+                        style={{ background: "linear-gradient(180deg, rgba(12,11,9,0.6), transparent)" }}
                       >
                         <span className="font-mono text-[10px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>
                           9:41
                         </span>
-                        <div className="w-20 h-5 rounded-full" style={{ background: "rgba(10,10,18,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
+                        <div className="w-20 h-5 rounded-full" style={{ background: "rgba(12,11,9,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
                         <span className="flex items-center gap-1 font-mono text-[9px]" style={{ color: "rgba(255,255,255,0.85)" }}>
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
@@ -307,13 +307,13 @@ export default function ProjectGallery({ project }: { project: Project }) {
                         />
                         <div
                           className="absolute inset-0 pointer-events-none"
-                          style={{ background: "linear-gradient(180deg, transparent 50%, rgba(10,10,18,0.45))" }}
+                          style={{ background: "linear-gradient(180deg, transparent 50%, rgba(12,11,9,0.45))" }}
                         />
                         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between font-mono text-[10px] px-3 py-2 rounded-xl backdrop-blur"
-                          style={{ background: "rgba(10,10,18,0.65)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.08)" }}
+                          style={{ background: "rgba(12,11,9,0.65)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.08)" }}
                         >
                           <span>{project.title} — Capture 01</span>
-                          <span className="flex items-center gap-1" style={{ color: "#a78bfa" }}>
+                          <span className="flex items-center gap-1" style={{ color: "#b3541e" }}>
                             <Maximize2 className="w-3 h-3" /> Zoom
                           </span>
                         </div>
@@ -330,7 +330,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                     style={{
                       border: "1px solid var(--color-border-2)",
                       background: "var(--color-surface)",
-                      boxShadow: "0 24px 64px rgba(0,0,0,0.45), 0 0 60px rgba(139,92,246,0.1)",
+                      boxShadow: "0 24px 64px rgba(0,0,0,0.45), 0 0 60px rgba(232,72,43,0.1)",
                     }}
                   >
                     <div
@@ -348,7 +348,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                       </span>
                       <span
                         className="hidden sm:flex items-center gap-1.5 font-mono text-[10px] px-2.5 py-1 rounded-lg"
-                        style={{ background: "rgba(34,211,238,0.1)", color: "#67e8f9", border: "1px solid rgba(34,211,238,0.25)" }}
+                        style={{ background: "rgba(63,143,127,0.1)", color: "#5fbfa9", border: "1px solid rgba(63,143,127,0.3)" }}
                       >
                         <Maximize2 className="w-3 h-3" /> Fullscreen
                       </span>
@@ -363,14 +363,14 @@ export default function ProjectGallery({ project }: { project: Project }) {
                       />
                       <div
                         className="absolute inset-0 pointer-events-none"
-                        style={{ background: "linear-gradient(180deg, transparent 55%, rgba(10,10,18,0.5))" }}
+                        style={{ background: "linear-gradient(180deg, transparent 55%, rgba(12,11,9,0.5))" }}
                       />
                       <div
                         className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-[11px] px-3 py-2 rounded-xl backdrop-blur"
-                        style={{ background: "rgba(10,10,18,0.6)", color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.08)" }}
+                        style={{ background: "rgba(12,11,9,0.6)", color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.08)" }}
                       >
                         <span>{project.title} — Capture 01</span>
-                        <span style={{ color: "#a78bfa" }}>Click to zoom ↗</span>
+                        <span style={{ color: "#b3541e" }}>Click to zoom ↗</span>
                       </div>
                     </div>
                   </motion.button>
@@ -401,9 +401,9 @@ export default function ProjectGallery({ project }: { project: Project }) {
                       style={
                         isMobile
                           ? {
-                              border: "4px solid #1c1c30",
+                              border: "4px solid #23201b",
                               outline: "1px solid var(--color-border)",
-                              background: "#0a0a12",
+                              background: "#0a0908",
                               boxShadow: "0 16px 40px rgba(0,0,0,0.4)",
                             }
                           : {
@@ -416,9 +416,9 @@ export default function ProjectGallery({ project }: { project: Project }) {
                     >
                       {isMobile && (
                         <div className="absolute top-0 inset-x-0 z-10 flex justify-center pt-1.5 pb-5"
-                          style={{ background: "linear-gradient(180deg, rgba(10,10,18,0.55), transparent)" }}
+                          style={{ background: "linear-gradient(180deg, rgba(12,11,9,0.55), transparent)" }}
                         >
-                          <div className="w-10 h-3 rounded-full" style={{ background: "rgba(10,10,18,0.9)" }} />
+                          <div className="w-10 h-3 rounded-full" style={{ background: "rgba(12,11,9,0.9)" }} />
                         </div>
                       )}
                       <img
@@ -435,7 +435,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                       <div className="absolute bottom-3 left-3 flex items-center gap-2 font-mono text-[10px] opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300">
                         <span
                           className="px-2 py-0.5 rounded-md backdrop-blur"
-                          style={{ background: "rgba(0,0,0,0.6)", color: "#a78bfa", border: "1px solid rgba(139,92,246,0.3)" }}
+                          style={{ background: "rgba(0,0,0,0.6)", color: "#b3541e", border: "1px solid rgba(232,72,43,0.3)" }}
                         >
                           {String(i + 2).padStart(2, "0")}
                         </span>
@@ -465,11 +465,11 @@ export default function ProjectGallery({ project }: { project: Project }) {
                 </CardSection>
               )}
               {project.solution && (
-                <CardSection tint="#22d3ee" accent={["#22d3ee", "#67e8f9"]}>
+                <CardSection tint="#d9a441" accent={["#d9a441", "#5fbfa9"]}>
                   <SectionTitle
                     icon={<span className="font-mono text-sm font-bold">02</span>}
                     label="Solution"
-                    color="#67e8f9"
+                    color="#5fbfa9"
                   />
                   <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                     {project.solution}
@@ -480,21 +480,21 @@ export default function ProjectGallery({ project }: { project: Project }) {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <CardSection tint="#8b5cf6" accent={["#8b5cf6", "#22d3ee"]}>
+            <CardSection tint="#e8482b" accent={["#e8482b", "#d9a441"]}>
               <SectionTitle
                 icon={<Layers className="w-4 h-4" />}
                 label="Architecture"
-                color="#a78bfa"
+                color="#b3541e"
               />
               <ArchDiagram layers={project.arch} />
             </CardSection>
 
             {project.features.length > 0 && (
-              <CardSection tint="#34d399" accent={["#8b5cf6", "#34d399"]}>
+              <CardSection tint="#4cd08d" accent={["#e8482b", "#4cd08d"]}>
                 <SectionTitle
                   icon={<Zap className="w-4 h-4" />}
                   label="Key Features"
-                  color="#a78bfa"
+                  color="#b3541e"
                 />
                 <ul className="space-y-3">
                   {project.features.map((f, i) => (
@@ -515,7 +515,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                   <SectionTitle
                     icon={<Layers className="w-4 h-4" />}
                     label="Technical Challenges"
-                    color="#fbbf24"
+                    color="#e3b94f"
                   />
                   <ul className="space-y-3">
                     {project.challenges.map((c, i) => (
@@ -530,11 +530,11 @@ export default function ProjectGallery({ project }: { project: Project }) {
                 </CardSection>
               )}
               {project.learned.length > 0 && (
-                <CardSection tint="#34d399" accent={["#34d399", "#8b5cf6"]}>
+                <CardSection tint="#4cd08d" accent={["#4cd08d", "#e8482b"]}>
                   <SectionTitle
                     icon={<BookOpen className="w-4 h-4" />}
                     label="What I Learned"
-                    color="#34d399"
+                    color="#4cd08d"
                   />
                   <ul className="space-y-3">
                     {project.learned.map((l, i) => (
@@ -589,7 +589,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
               style={{
                 background: "var(--color-bg-muted)",
                 border: "1px solid var(--color-border-2)",
-                boxShadow: "0 0 90px rgba(139,92,246,0.25), 0 48px 96px rgba(0,0,0,0.7)",
+                boxShadow: "0 0 90px rgba(232,72,43,0.25), 0 48px 96px rgba(0,0,0,0.7)",
               }}
               initial={{ opacity: 0, scale: 0.94, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -609,7 +609,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
                 >
                   {project.id.replace(/-/g, ".")}.app
                 </span>
-                <span className="font-mono text-[10px]" style={{ color: "#a78bfa" }}>
+                <span className="font-mono text-[10px]" style={{ color: "#b3541e" }}>
                   {String(lightbox + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}
                 </span>
                 <button
@@ -670,8 +670,8 @@ export default function ProjectGallery({ project }: { project: Project }) {
                     aria-label={`Capture ${i + 1}`}
                     className="relative flex-shrink-0 w-20 h-12 rounded-lg overflow-hidden transition-all duration-300"
                     style={{
-                      border: `1px solid ${i === lightbox ? "rgba(139,92,246,0.65)" : "var(--color-border)"}`,
-                      boxShadow: i === lightbox ? "0 0 14px rgba(139,92,246,0.25)" : "none",
+                      border: `1px solid ${i === lightbox ? "rgba(232,72,43,0.65)" : "var(--color-border)"}`,
+                      boxShadow: i === lightbox ? "0 0 14px rgba(232,72,43,0.25)" : "none",
                       opacity: i === lightbox ? 1 : 0.55,
                     }}
                   >

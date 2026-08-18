@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { Menu, X, Download, Github, Terminal } from "lucide-react";
+import { Menu, X, Download, Github } from "lucide-react";
 import { siteConfig } from "@/lib/data";
 import { downloadCV } from "@/lib/download-cv";
 import { cn } from "@/lib/utils";
@@ -19,7 +18,6 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
@@ -49,8 +47,6 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => setOpen(false), [pathname]);
-
   const isActive = (href: string) => {
     const section = href.replace("/#", "");
     return activeSection === section;
@@ -69,7 +65,7 @@ export default function Navbar() {
           zIndex: 60,
           height: "2px",
           transformOrigin: "0%",
-          background: "linear-gradient(90deg, #7c3aed, #22d3ee, #7c3aed)",
+          background: "linear-gradient(90deg, #e8482b, #d9a441, #e8482b)",
         }}
       />
 
@@ -85,7 +81,7 @@ export default function Navbar() {
         )}
         style={{
           background: scrolled
-            ? "rgba(10,10,18,0.92)"
+            ? "rgba(14,13,11,0.92)"
             : "transparent",
           backdropFilter: scrolled ? "blur(20px)" : "none",
           border: scrolled ? "1px solid rgba(255,255,255,0.07)" : "1px solid transparent",
@@ -96,7 +92,7 @@ export default function Navbar() {
           <Link href="/" className="group flex items-center gap-2">
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-[11px] text-white shadow-lg group-hover:scale-110 transition-transform duration-300"
-              style={{ background: "linear-gradient(135deg, #7c3aed, #22d3ee)" }}
+              style={{ background: "linear-gradient(135deg, #e8482b, #d9a441)" }}
             >
               RS
             </div>
@@ -104,7 +100,7 @@ export default function Navbar() {
               <span className="font-semibold text-sm" style={{ color: "var(--color-text-primary)" }}>
                 Rami
               </span>
-              <span className="font-semibold text-sm text-violet-400">Sassi</span>
+              <span className="font-semibold text-sm text-[#e3b94f]">Sassi</span>
               <span className="font-mono text-[10px] ml-1 opacity-40" style={{ color: "var(--color-text-muted)" }}>
                 .dev
               </span>
@@ -122,7 +118,7 @@ export default function Navbar() {
                     className={cn(
                       "relative px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-200",
                       active
-                        ? "text-violet-300"
+                        ? "text-[#ff7a5c]"
                         : "text-slate-400 hover:text-white"
                     )}
                   >
@@ -130,7 +126,7 @@ export default function Navbar() {
                       <motion.span
                         layoutId="nav-pill"
                         className="absolute inset-0 rounded-lg"
-                        style={{ background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.25)" }}
+                        style={{ background: "rgba(232,72,43,0.12)", border: "1px solid rgba(232,72,43,0.25)" }}
                         transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
                       />
                     )}
@@ -151,9 +147,9 @@ export default function Navbar() {
               aria-label="GitHub"
               style={{ color: "var(--color-text-muted)", border: "1px solid var(--color-border)" }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.color = "#c4b5fd";
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(139,92,246,0.3)";
-                (e.currentTarget as HTMLElement).style.background = "rgba(139,92,246,0.08)";
+                (e.currentTarget as HTMLElement).style.color = "#ff7a5c";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,72,43,0.3)";
+                (e.currentTarget as HTMLElement).style.background = "rgba(232,72,43,0.08)";
               }}
               onMouseLeave={e => {
                 (e.currentTarget as HTMLElement).style.color = "var(--color-text-muted)";
@@ -176,7 +172,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setOpen(v => !v)}
-            className="md:hidden p-2 rounded-lg transition-all"
+            className="md:hidden p-2 h-11 w-11 rounded-lg transition-all flex items-center justify-center"
             aria-label={open ? "Close menu" : "Open menu"}
             style={{ color: "var(--color-text-muted)" }}
           >
@@ -215,20 +211,21 @@ export default function Navbar() {
                   >
                     <Link
                       href={link.href}
+                      onClick={() => setOpen(false)}
                       className={cn(
                         "flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all",
                         isActive(link.href)
-                          ? "text-violet-300"
+                          ? "text-[#ff7a5c]"
                           : "text-slate-400 hover:text-white hover:bg-white/5"
                       )}
                       style={
                         isActive(link.href)
-                          ? { background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.2)" }
+                          ? { background: "rgba(232,72,43,0.12)", border: "1px solid rgba(232,72,43,0.2)" }
                           : {}
                       }
                     >
                       {isActive(link.href) && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#e8482b]" />
                       )}
                       {link.label}
                     </Link>
@@ -255,7 +252,7 @@ export default function Navbar() {
                   <button
                     onClick={() => void downloadCV()}
                     className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-white"
-                    style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)" }}
+                    style={{ background: "linear-gradient(135deg, #e8482b, #b3541e)" }}
                   >
                     <Download className="w-4 h-4" /> Resume
                   </button>
