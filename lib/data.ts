@@ -11,7 +11,7 @@ export const siteConfig = {
   linkedin:        "https://www.linkedin.com/in/ramisassi/",
   location:        "Tunis, Tunisia",
   availableForWork: true,
-  cvUrl:           "/resume.pdf",
+  cvUrl:           "/Rami CV.pdf",
   cvFileName:      "CV_Rami-Sassi.pdf",
 };
 
