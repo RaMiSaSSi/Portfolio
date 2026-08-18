@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
-import { Github, ExternalLink, ArrowRight, X, ChevronRight, ChevronLeft, Images, Layers, Zap, BookOpen, Sparkles } from "lucide-react";
+import { Github, ExternalLink, ArrowRight, X, ChevronRight, ChevronLeft, Images, Layers, Zap, BookOpen, Check } from "lucide-react";
 import { projects, projectCategories, type Project, type ArchLayer } from "@/lib/data";
 
 const stackColor = (s: string) => {
@@ -118,9 +118,51 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
   );
 }
 
+function ModalSection({
+  icon,
+  label,
+  color,
+  className = "",
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  color: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl p-5 ${className}`}
+      style={{
+        background: `linear-gradient(150deg, ${color}0d, transparent 62%)`,
+        border: `1px solid ${color}26`,
+      }}
+    >
+      <div
+        className="absolute top-0 left-0 right-0 h-[2px]"
+        style={{ background: `linear-gradient(90deg, ${color}, ${color}66)` }}
+      />
+      <div className="flex items-center gap-2.5 mb-3">
+        <span
+          className="flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0"
+          style={{ background: `${color}18`, border: `1px solid ${color}35`, color }}
+        >
+          {icon}
+        </span>
+        <h4 className="font-semibold text-sm" style={{ color: "var(--color-text-primary)" }}>
+          {label}
+        </h4>
+      </div>
+      {children}
+    </div>
+  );
+}
+
 function CaseStudyModal({ project, onClose }: { project: Project; onClose: () => void }) {
   const [shot, setShot] = useState(0);
   const shots = project.screenshots ?? [];
+  const isMobile = project.layout === "mobile";
 
   const prev = () => setShot(s => (s - 1 + shots.length) % shots.length);
   const next = () => setShot(s => (s + 1) % shots.length);
@@ -160,7 +202,7 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
       <motion.div
         className="relative w-full max-w-3xl max-h-[92vh] flex flex-col rounded-3xl overflow-hidden"
         style={{
-          background: "var(--color-bg-muted)",
+          background: "linear-gradient(180deg, var(--color-bg-muted) 0%, var(--color-surface) 100%)",
           border: "1px solid var(--color-border-2)",
           boxShadow: "0 0 90px rgba(139,92,246,0.22), 0 48px 96px rgba(0,0,0,0.65)",
         }}
@@ -170,12 +212,30 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
         <div
+          aria-hidden
+          className="absolute top-0 inset-x-0 h-72 pointer-events-none"
+          style={{
+            background: "radial-gradient(70% 100% at 50% 0%, rgba(139,92,246,0.14), transparent 75%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute top-0 left-0 right-0 h-[2px]"
+          style={{ background: "linear-gradient(90deg, transparent, #8b5cf6, #22d3ee, transparent)" }}
+        />
+        <div
           className="sticky top-0 z-10 flex items-center justify-between gap-3 px-6 py-4"
-          style={{ background: "var(--color-bg-muted)", borderBottom: "1px solid var(--color-border)" }}
+          style={{ background: "linear-gradient(180deg, var(--color-bg-muted) 60%, transparent)", borderBottom: "1px solid var(--color-border)" }}
         >
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-violet-400 tracking-widest">PROJECT {project.number}</span>
+            <div className="flex items-center gap-2.5">
+              <span className="font-mono text-xs tracking-widest" style={{ color: "#a78bfa" }}>
+                PROJECT {project.number}
+              </span>
+              <span
+                className="w-1 h-1 rounded-full"
+                style={{ background: "linear-gradient(135deg, #8b5cf6, #22d3ee)", boxShadow: "0 0 8px rgba(139,92,246,0.9)" }}
+              />
               <StatusBadge status={project.status} />
             </div>
             <h3 className="text-lg font-bold truncate" style={{ color: "var(--color-text-primary)" }}>
@@ -212,25 +272,48 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
               <div>
                 <motion.div
                   layoutId={`shot-${project.id}`}
-                  className="relative aspect-video overflow-hidden rounded-xl"
-                  style={{ border: "1px solid var(--color-border-2)", background: "var(--color-bg)" }}
+                  className={`relative overflow-hidden ${
+                    isMobile
+                      ? "mx-auto aspect-[9/17] w-full max-w-[270px] sm:max-w-[300px] rounded-[2rem]"
+                      : "aspect-video rounded-xl"
+                  }`}
+                  style={
+                    isMobile
+                      ? { border: "6px solid #1c1c30", outline: "1px solid var(--color-border-2)", background: "#0a0a12" }
+                      : { border: "1px solid var(--color-border-2)", background: "var(--color-bg)" }
+                  }
                 >
-                  <div
-                    className="absolute top-0 inset-x-0 z-10 flex items-center gap-2 px-3 py-2"
-                    style={{ background: "rgba(10,10,18,0.6)", backdropFilter: "blur(8px)" }}
-                  >
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-                    <span className="flex-1 mx-2 h-5 rounded-md flex items-center px-2 font-mono text-[9px] overflow-hidden whitespace-nowrap"
-                      style={{ background: "var(--color-surface)", color: "var(--color-text-muted)" }}
+                  {isMobile ? (
+                    <div
+                      className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-4 py-2.5"
+                      style={{ background: "linear-gradient(180deg, rgba(10,10,18,0.55), transparent)" }}
                     >
-                      {project.id.replace(/-/g, ".")}.app
-                    </span>
-                    <span className="font-mono text-[10px]" style={{ color: "#a78bfa" }}>
-                      {String(shot + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}
-                    </span>
-                  </div>
+                      <span className="font-mono text-[9px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>
+                        9:41
+                      </span>
+                      <div className="w-16 h-4 rounded-full" style={{ background: "rgba(10,10,18,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
+                      <span className="font-mono text-[9px]" style={{ color: "#a78bfa" }}>
+                        {String(shot + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className="absolute top-0 inset-x-0 z-10 flex items-center gap-2 px-3 py-2"
+                      style={{ background: "rgba(10,10,18,0.6)", backdropFilter: "blur(8px)" }}
+                    >
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                      <span className="flex-1 mx-2 h-5 rounded-md flex items-center px-2 font-mono text-[9px] overflow-hidden whitespace-nowrap"
+                        style={{ background: "var(--color-surface)", color: "var(--color-text-muted)" }}
+                      >
+                        {project.id.replace(/-/g, ".")}.app
+                      </span>
+                      <span className="font-mono text-[10px]" style={{ color: "#a78bfa" }}>
+                        {String(shot + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}
+                      </span>
+                    </div>
+                  )}
 
                   <AnimatePresence mode="wait">
                     <motion.img
@@ -244,6 +327,13 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                     />
                   </AnimatePresence>
+
+                  {isMobile && (
+                    <div
+                      className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-10 w-20 h-1 rounded-full"
+                      style={{ background: "rgba(255,255,255,0.7)" }}
+                    />
+                  )}
 
                   {shots.length > 1 && (
                     <>
@@ -273,7 +363,9 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
                       key={s}
                       onClick={() => setShot(i)}
                       aria-label={`Capture ${i + 1}`}
-                      className="relative flex-shrink-0 w-20 h-12 rounded-lg overflow-hidden transition-all duration-300"
+                      className={`relative flex-shrink-0 overflow-hidden transition-all duration-300 ${
+                        isMobile ? "rounded-2xl w-12 h-24" : "rounded-lg w-20 h-12"
+                      }`}
                       style={{
                         border: `1px solid ${i === shot ? "rgba(139,92,246,0.65)" : "var(--color-border)"}`,
                         boxShadow: i === shot ? "0 0 14px rgba(139,92,246,0.25)" : "none",
@@ -287,117 +379,164 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
               </div>
             )}
 
-            <div>
-              <p className="text-sm font-medium mb-1" style={{ color: "var(--color-text-secondary)" }}>
+            <div
+              className="relative overflow-hidden rounded-2xl p-5"
+              style={{
+                background: "linear-gradient(150deg, rgba(139,92,246,0.09), rgba(34,211,238,0.04) 55%, transparent)",
+                border: "1px solid var(--color-border)",
+              }}
+            >
+              <p className="text-base font-semibold mb-2" style={{ color: "var(--color-text-primary)" }}>
                 {project.subtitle || "Case study"}
               </p>
-              <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
-                Role: <span style={{ color: "var(--color-text-secondary)" }}>{project.role}</span>
+              <p
+                className="text-xs font-mono flex flex-wrap items-center gap-x-3 gap-y-1 mb-3"
+                style={{ color: "var(--color-text-muted)" }}
+              >
+                <span style={{ color: "#a78bfa" }}>ROLE:</span>
+                <span style={{ color: "var(--color-text-secondary)" }}>{project.role}</span>
               </p>
               {project.description && (
-                <p className="text-sm leading-relaxed mt-3" style={{ color: "var(--color-text-secondary)" }}>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                   {project.description}
                 </p>
               )}
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {project.stack.map(s => {
-                const c = stackColor(s);
-                return (
-                  <span key={s} className="text-xs px-2.5 py-1 rounded-lg font-mono font-medium"
-                    style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}` }}
-                  >
-                    {s}
-                  </span>
-                );
-              })}
+              {project.stack.length > 0 && (
+                <div
+                  className="flex flex-wrap gap-2 pt-4 mt-4"
+                  style={{ borderTop: "1px dashed var(--color-border)" }}
+                >
+                  {project.stack.map(s => {
+                    const c = stackColor(s);
+                    return (
+                      <span key={s} className="text-xs px-2.5 py-1 rounded-lg font-mono font-medium"
+                        style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}` }}
+                      >
+                        {s}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {(project.problem || project.solution) && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {project.problem && (
-                  <div className="rounded-xl p-4" style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)" }}>
-                    <h4 className="font-semibold text-sm mb-2 text-red-400 flex items-center gap-1.5">
-                      <span className="font-mono">01</span> Problem
-                    </h4>
+                  <ModalSection
+                    icon={<span className="font-mono text-[10px] font-bold">01</span>}
+                    label="Problem"
+                    color="#f87171"
+                  >
                     <p className="text-xs leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                       {project.problem}
                     </p>
-                  </div>
+                  </ModalSection>
                 )}
                 {project.solution && (
-                  <div className="rounded-xl p-4" style={{ background: "rgba(34,211,238,0.06)", border: "1px solid rgba(34,211,238,0.15)" }}>
-                    <h4 className="font-semibold text-sm mb-2 text-cyan-400 flex items-center gap-1.5">
-                      <span className="font-mono">02</span> Solution
-                    </h4>
+                  <ModalSection
+                    icon={<span className="font-mono text-[10px] font-bold">02</span>}
+                    label="Solution"
+                    color="#67e8f9"
+                  >
                     <p className="text-xs leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
                       {project.solution}
                     </p>
-                  </div>
+                  </ModalSection>
                 )}
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-xl p-4" style={{ background: "rgba(139,92,246,0.05)", border: "1px solid rgba(139,92,246,0.15)" }}>
-                <ArchDiagram layers={project.arch} />
-              </div>
+            {(project.arch.length > 0 || project.features.length > 0) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {project.arch.length > 0 && (
+                  <ModalSection
+                    icon={<Layers className="w-3.5 h-3.5" />}
+                    label="Architecture"
+                    color="#a78bfa"
+                    className="h-full"
+                  >
+                    <ArchDiagram layers={project.arch} />
+                  </ModalSection>
+                )}
 
-              {project.features.length > 0 && (
-                <div>
-                  <h4 className="flex items-center gap-2 font-semibold text-sm mb-3" style={{ color: "var(--color-text-primary)" }}>
-                    <Zap className="w-4 h-4 text-violet-400" />
-                    Key Features
-                  </h4>
-                  <ul className="grid grid-cols-1 gap-2">
-                    {project.features.map((f, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                        <ChevronRight className="w-3.5 h-3.5 text-violet-400 flex-shrink-0 mt-0.5" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+                {project.features.length > 0 && (
+                  <ModalSection
+                    icon={<Zap className="w-3.5 h-3.5" />}
+                    label="Key Features"
+                    color="#38bdf8"
+                    className="h-full"
+                  >
+                    <ul className="grid grid-cols-1 gap-2.5">
+                      {project.features.map((f, i) => (
+                        <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                          <span
+                            className="flex items-center justify-center w-4 h-4 rounded-full flex-shrink-0 mt-0.5"
+                            style={{ background: "#38bdf818", border: "1px solid #38bdf833", color: "#38bdf8" }}
+                          >
+                            <Check className="w-2.5 h-2.5" />
+                          </span>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </ModalSection>
+                )}
+              </div>
+            )}
 
             {project.challenges.length > 0 && (
-              <div>
-                <h4 className="flex items-center gap-2 font-semibold text-sm mb-3" style={{ color: "var(--color-text-primary)" }}>
-                  <Layers className="w-4 h-4 text-amber-400" />
-                  Technical Challenges
-                </h4>
-                <ul className="space-y-2">
+              <ModalSection
+                icon={<span className="font-mono text-[10px] font-bold">{String(project.challenges.length).padStart(2, "0")}</span>}
+                label="Technical Challenges"
+                color="#fbbf24"
+              >
+                <ul className="space-y-2.5">
                   {project.challenges.map((c, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                      <span className="font-mono text-amber-400 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                    <li
+                      key={i}
+                      className="flex items-start gap-2.5 text-xs rounded-lg px-3 py-2"
+                      style={{ background: "#fbbf2408", border: "1px solid #fbbf2414", color: "var(--color-text-secondary)" }}
+                    >
+                      <span className="font-mono text-amber-400 flex-shrink-0 mt-0.5">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
                       {c}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </ModalSection>
             )}
 
             {project.learned.length > 0 && (
-              <div>
-                <h4 className="flex items-center gap-2 font-semibold text-sm mb-3" style={{ color: "var(--color-text-primary)" }}>
-                  <BookOpen className="w-4 h-4 text-emerald-400" />
-                  What I Learned
-                </h4>
-                <ul className="space-y-2">
+              <ModalSection
+                icon={<BookOpen className="w-3.5 h-3.5" />}
+                label="What I Learned"
+                color="#34d399"
+              >
+                <ul className="space-y-2.5">
                   {project.learned.map((l, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0 mt-1.5" />
+                    <li
+                      key={i}
+                      className="flex items-start gap-2.5 text-xs rounded-lg px-3 py-2"
+                      style={{ background: "#34d39908", border: "1px solid #34d39914", color: "var(--color-text-secondary)" }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
+                        style={{ background: "#34d399", boxShadow: "0 0 8px rgba(52,211,153,0.7)" }}
+                      />
                       {l}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </ModalSection>
             )}
 
             {(project.github || project.demo) && (
-              <div className="flex flex-wrap gap-3 pt-2">
+              <div
+                className="rounded-2xl p-5 flex flex-wrap items-center justify-center gap-3"
+                style={{ background: "rgba(139,92,246,0.05)", border: "1px solid var(--color-border)" }}
+              >
                 {project.github && (
                   <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-ghost text-xs" style={{ padding: "0.5rem 1.25rem", fontSize: "0.8rem" }}>
                     <Github className="w-4 h-4" /> View Code
@@ -418,6 +557,62 @@ function CaseStudyModal({ project, onClose }: { project: Project; onClose: () =>
 }
 
 function BrowserMockup({ project, big = false }: { project: Project; big?: boolean }) {
+  const isMobile = project.layout === "mobile";
+
+  if (isMobile) {
+    return (
+      <div className="flex justify-center">
+        <div
+          className="relative rounded-[1.75rem] overflow-hidden transition-all duration-500 group-hover:shadow-[0_16px_48px_rgba(139,92,246,0.18)]"
+          style={{ border: "5px solid #1c1c30", outline: "1px solid var(--color-border-2)", background: "#0a0a12" }}
+        >
+          <div
+            className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-4 py-2"
+            style={{ background: "linear-gradient(180deg, rgba(10,10,18,0.55), transparent)" }}
+          >
+            <span className="font-mono text-[9px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>
+              9:41
+            </span>
+            <div className="w-14 h-4 rounded-full" style={{ background: "rgba(10,10,18,0.9)", border: "1px solid rgba(255,255,255,0.08)" }} />
+            <span className="flex items-center gap-1">
+              <span className="w-1 h-1 rounded-full bg-emerald-400" />
+              <span className="w-1 h-1 rounded-full bg-emerald-400" />
+              <span className="w-1 h-1 rounded-full bg-emerald-400/40" />
+            </span>
+          </div>
+          <div className={`relative aspect-[9/17] overflow-hidden ${big ? "w-52 sm:w-64" : "w-36 sm:w-44"}`}>
+            {project.screenshots.length > 1 && (
+              <img
+                src={project.screenshots[1]}
+                alt=""
+                aria-hidden
+                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 rotate-[2deg] scale-95 group-hover:rotate-0 group-hover:scale-100"
+              />
+            )}
+            <img
+              src={project.screenshots[0]}
+              alt={`${project.title} — interface`}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:translate-x-8"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"
+              style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.35), transparent 55%)" }}
+            />
+            <div
+              className="absolute bottom-2 right-2 flex items-center gap-1.5 font-mono text-[10px] px-2 py-1 rounded-lg backdrop-blur transition-opacity duration-300 group-hover:opacity-0"
+              style={{ background: "rgba(0,0,0,0.55)", color: "#c4b5fd", border: "1px solid rgba(139,92,246,0.3)" }}
+            >
+              <Images className="w-3 h-3" />
+              {String(project.screenshots.length).padStart(2, "0")} captures
+            </div>
+          </div>
+          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-16 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.7)" }} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="relative rounded-xl overflow-hidden transition-all duration-500 group-hover:shadow-[0_16px_48px_rgba(139,92,246,0.18)]"
@@ -479,6 +674,15 @@ function ProjectCard({
   big: boolean;
   onOpen: () => void;
 }) {
+  const accents = [
+    ["#8b5cf6", "#22d3ee"],
+    ["#22d3ee", "#34d399"],
+    ["#f59e0b", "#f87171"],
+    ["#34d399", "#8b5cf6"],
+    ["#f87171", "#8b5cf6"],
+  ];
+  const [a1, a2] = accents[index % accents.length];
+
   return (
     <motion.article
       layout
@@ -494,64 +698,104 @@ function ProjectCard({
         <div
           className="relative h-full rounded-2xl overflow-hidden flex flex-col"
           style={{
-            background: "var(--color-surface)",
+            background:
+              "linear-gradient(165deg, var(--color-surface-1) 0%, var(--color-surface) 55%, rgba(22,22,37,0.45) 100%)",
             border: "1px solid var(--color-border)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
+            boxShadow: "0 6px 28px rgba(0,0,0,0.32)",
+            transition: "border-color 0.4s ease, box-shadow 0.4s ease",
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = `${a1}55`;
+            e.currentTarget.style.boxShadow = `0 24px 64px rgba(0,0,0,0.45), 0 0 44px ${a1}22`;
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = "var(--color-border)";
+            e.currentTarget.style.boxShadow = "0 6px 28px rgba(0,0,0,0.32)";
           }}
         >
           <div
-            className="h-[2px] w-full transition-all duration-500"
-            style={{ background: "linear-gradient(90deg, #8b5cf6, #22d3ee)", opacity: 0.4 }}
+            aria-hidden
+            className="absolute -top-28 -right-20 w-80 h-80 rounded-full pointer-events-none transition-opacity duration-500 opacity-50 group-hover:opacity-100"
+            style={{ background: `radial-gradient(circle, ${a1}2b, transparent 65%)` }}
           />
           <div
-            className="h-[2px] absolute top-0 left-0 w-0 group-hover:w-full transition-all duration-500 z-20"
-            style={{ background: "linear-gradient(90deg, #8b5cf6, #22d3ee)" }}
+            aria-hidden
+            className="absolute -bottom-32 -left-20 w-96 h-96 rounded-full pointer-events-none transition-opacity duration-500 opacity-40 group-hover:opacity-80"
+            style={{ background: `radial-gradient(circle, ${a2}22, transparent 65%)` }}
+          />
+
+          <div
+            className="h-[2px] w-full transition-all duration-500"
+            style={{ background: `linear-gradient(90deg, ${a1}, ${a2})`, opacity: 0.45 }}
+          />
+          <div
+            className="h-[2px] absolute top-0 left-0 w-0 group-hover:w-full transition-all duration-500 z-30"
+            style={{ background: `linear-gradient(90deg, ${a1}, ${a2})` }}
           />
 
           <span
             aria-hidden
-            className="absolute -top-5 -right-1 font-black leading-none select-none pointer-events-none transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
-            style={{ fontSize: big ? "8rem" : "6rem", color: "rgba(139,92,246,0.07)" }}
+            className="absolute -top-3 -right-2 font-black leading-none select-none pointer-events-none transition-all duration-500 group-hover:translate-x-1.5 group-hover:-translate-y-1.5"
+            style={{
+              fontSize: big ? "7.5rem" : "5.5rem",
+              color: "transparent",
+              WebkitTextStroke: `1px ${a1}40`,
+            }}
           >
             {project.number}
           </span>
 
-          <div className="pt-5 px-5 pb-0" style={{ transform: "translateZ(24px)" }}>
-            <div className="flex items-center justify-between mb-3">
-              <span className="font-mono text-[10px] tracking-widest" style={{ color: "var(--color-text-muted)" }}>
-                PROJECT {project.number}
-              </span>
-              <StatusBadge status={project.status} />
-            </div>
+          <div
+            className="flex items-center justify-between px-5 pt-4 pb-4"
+            style={{ transform: "translateZ(20px)" }}
+          >
+            <span
+              className="flex items-center gap-2 font-mono text-[10px] tracking-widest"
+              style={{ color: "var(--color-text-muted)" }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: a1, boxShadow: `0 0 8px ${a1}` }}
+              />
+              PROJECT {project.number}
+            </span>
+            <StatusBadge status={project.status} />
+          </div>
+
+          <div className="px-5 pb-5" style={{ transform: "translateZ(24px)" }}>
             <BrowserMockup project={project} big={big} />
           </div>
 
-          <div className="p-6 flex flex-col flex-1" style={{ transform: "translateZ(40px)" }}>
+          <div className="px-6 pb-5 flex flex-col flex-1" style={{ transform: "translateZ(40px)" }}>
             <h3
-              className={`font-bold mt-0.5 group-hover:text-violet-300 transition-colors duration-300 ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}
+              className={`font-bold group-hover:text-violet-300 transition-colors duration-300 ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}
               style={{ color: "var(--color-text-primary)" }}
             >
               {project.title}
             </h3>
-            <p className="text-xs mt-1" style={{ color: "var(--color-text-muted)" }}>
-              {project.subtitle}
-            </p>
+            {project.subtitle && (
+              <p className="text-xs mt-1.5" style={{ color: "var(--color-text-muted)" }}>
+                {project.subtitle}
+              </p>
+            )}
 
-            <div className="flex flex-wrap gap-1.5 mt-4">
-              {project.tags.map(tag => (
-                <span
-                  key={tag}
-                  className="font-mono text-[10px] px-2 py-0.5 rounded-full"
-                  style={{
-                    background: "rgba(139,92,246,0.1)",
-                    color: "#a78bfa",
-                    border: "1px solid rgba(139,92,246,0.2)",
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {project.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-3.5">
+                {project.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="font-mono text-[10px] px-2 py-0.5 rounded-full"
+                    style={{
+                      background: `${a1}12`,
+                      color: "#c4b5fd",
+                      border: `1px solid ${a1}30`,
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <div className="mt-4 flex-1">
               {project.description ? (
@@ -565,7 +809,7 @@ function ProjectCard({
               )}
             </div>
 
-            <div className="flex flex-wrap gap-1.5 mt-4 mb-4">
+            <div className="flex flex-wrap gap-1.5 mt-4">
               {project.stack.map(s => {
                 const c = stackColor(s);
                 return (
@@ -579,47 +823,57 @@ function ProjectCard({
                 );
               })}
             </div>
+          </div>
 
-            <div
-              className="flex items-center justify-between pt-4"
-              style={{ borderTop: "1px solid var(--color-border)" }}
+          <div
+            className="flex items-center justify-between gap-3 px-6 py-4 mt-auto"
+            style={{
+              borderTop: "1px solid var(--color-border)",
+              background: `linear-gradient(90deg, ${a1}0d, transparent 65%)`,
+            }}
+          >
+            <button
+              className="flex items-center gap-2 text-xs font-medium transition-colors group-hover:text-violet-300"
+              style={{ color: "var(--color-text-muted)" }}
+              onClick={e => { e.stopPropagation(); onOpen(); }}
             >
-              <button
-                className="flex items-center gap-1.5 text-xs font-medium transition-colors"
-                style={{ color: "var(--color-text-muted)" }}
-                onClick={e => { e.stopPropagation(); onOpen(); }}
-              >
-                <span className="text-violet-400">→</span>
-                <span className="group-hover:text-violet-300 transition-colors">View case study</span>
-              </button>
-              <div className="flex items-center gap-2">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                    onClick={e => e.stopPropagation()}
-                    className="p-1.5 rounded-lg transition-all hover:text-white hover:bg-white/10"
-                    style={{ color: "var(--color-text-muted)" }}
-                  >
-                    <Github className="w-3.5 h-3.5" />
-                  </a>
-                )}
-                {project.demo && (
-                  <a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Live demo"
-                    onClick={e => e.stopPropagation()}
-                    className="p-1.5 rounded-lg transition-all hover:text-cyan-400 hover:bg-cyan-400/10"
-                    style={{ color: "var(--color-text-muted)" }}
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
-              </div>
+              View case study
+              <ArrowRight
+                className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5"
+                style={{ color: a1 }}
+              />
+            </button>
+            <div className="flex items-center gap-1.5">
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  onClick={e => e.stopPropagation()}
+                  className="p-2 rounded-full transition-all duration-300 hover:text-white"
+                  style={{ color: "var(--color-text-muted)", background: "rgba(255,255,255,0.04)", border: "1px solid var(--color-border)" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = `${a1}22`; e.currentTarget.style.borderColor = `${a1}55`; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "var(--color-border)"; }}
+                >
+                  <Github className="w-3.5 h-3.5" />
+                </a>
+              )}
+              {project.demo && (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Live demo"
+                  onClick={e => e.stopPropagation()}
+                  className="p-2 rounded-full transition-all duration-300 hover:text-cyan-300"
+                  style={{ color: "var(--color-text-muted)", background: "rgba(255,255,255,0.04)", border: "1px solid var(--color-border)" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = `${a2}22`; e.currentTarget.style.borderColor = `${a2}55`; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "var(--color-border)"; }}
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -698,10 +952,32 @@ function TechMarquee({ stack }: { stack: string[] }) {
 export default function Projects({ preview = false }: { preview?: boolean }) {
   const [selected, setSelected] = useState<Project | null>(null);
   const [filter, setFilter] = useState("All");
+  const [spotlight, setSpotlight] = useState(0);
+  const [hoverLock, setHoverLock] = useState(false);
+  const [gridHeight, setGridHeight] = useState<number | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const list = preview ? projects.filter(p => p.featured) : projects;
-  const filtered = filter === "All" ? list : list.filter(p => p.category.includes(filter));
+  const ordered = preview ? [...list.slice(spotlight), ...list.slice(0, spotlight)] : list;
+  const filtered = filter === "All" ? ordered : ordered.filter(p => p.category.includes(filter));
   const allStack = Array.from(new Set(projects.flatMap(p => p.stack)));
+  const paused = hoverLock || !!selected || list.length < 2;
+
+  useEffect(() => {
+    if (!preview || paused) return;
+    const id = setInterval(() => setSpotlight(s => (s + 1) % list.length), 5000);
+    return () => clearInterval(id);
+  }, [preview, paused, list.length]);
+
+  useEffect(() => {
+    if (!preview) return;
+    const el = gridRef.current;
+    if (!el) return;
+    const h = el.getBoundingClientRect().height;
+    setGridHeight(h);
+    const t = setTimeout(() => setGridHeight(null), 750);
+    return () => clearTimeout(t);
+  }, [preview, spotlight]);
 
   return (
     <>
@@ -714,10 +990,7 @@ export default function Projects({ preview = false }: { preview?: boolean }) {
             transition={{ duration: 0.6 }}
             className="mb-12"
           >
-            <p className="section-label flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              {preview ? "Selected Work" : "Projects"}
-            </p>
+            
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div>
                 <h2
@@ -755,6 +1028,23 @@ export default function Projects({ preview = false }: { preview?: boolean }) {
                 <FilterChips filter={filter} onChange={setFilter} />
               </motion.div>
             )}
+
+            {preview && list.length > 1 && (
+              <div className="mt-8 flex items-center gap-2">
+                {list.map((p, i) => (
+                  <button
+                    key={p.id}
+                    onClick={() => setSpotlight(i)}
+                    aria-label={`Mettre en avant ${p.title}`}
+                    className="h-1.5 rounded-full transition-all duration-500 cursor-pointer"
+                    style={{
+                      width: spotlight === i ? 28 : 10,
+                      background: spotlight === i ? "linear-gradient(90deg, #8b5cf6, #22d3ee)" : "var(--color-border-2)",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
 
           {filtered.length === 0 ? (
@@ -767,14 +1057,21 @@ export default function Projects({ preview = false }: { preview?: boolean }) {
               No projects in this category yet.
             </motion.p>
           ) : (
-            <motion.div layout className="grid grid-cols-1 md:grid-cols-6 gap-6">
+            <motion.div
+              ref={gridRef}
+              layout
+              className="grid grid-cols-1 md:grid-cols-6 gap-6 [overflow-anchor:none]"
+              style={gridHeight !== null ? { height: gridHeight } : undefined}
+              onMouseEnter={() => setHoverLock(true)}
+              onMouseLeave={() => setHoverLock(false)}
+            >
               <AnimatePresence mode="popLayout">
                 {filtered.map((project, i) => (
                   <ProjectCard
                     key={project.id}
                     project={project}
                     index={i}
-                    big={filtered.length === 1 || i === 0}
+                    big={preview ? i === 0 : filtered.length === 1 || i === 0}
                     onOpen={() => setSelected(project)}
                   />
                 ))}
